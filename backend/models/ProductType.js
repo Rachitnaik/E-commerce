@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
 const ProductType = sequelize.define(
-  "ProductType",
+  "producttype",
   {
     product_type_id: {
       primaryKey: true,
@@ -16,7 +16,7 @@ const ProductType = sequelize.define(
     },
   },
   {
-    tableName: "product_type",
+    tableName: "producttype",
     timestamps: false, // Disable createdAt/updatedAt if not needed
   }
 );

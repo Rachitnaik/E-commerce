@@ -28,7 +28,7 @@ const Product = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: "product_type", // Table name of the ProductType model
+        model: "producttype", // Table name of the ProductType model
         key: "product_type_id", // Column name in the ProductType model
       },
     },
