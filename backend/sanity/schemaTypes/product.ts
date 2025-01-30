@@ -54,6 +54,16 @@ export const product = defineField({
       title:"productType",
       type:"reference",
       to: [{ type: "productType" }],
-    }
+    },
+    {
+      name: "price",
+      title: "Price",
+      type: "number",
+    },
+    {
+      name: "description",
+      title: "Description",
+      type: "text",
+    },
   ],
 });

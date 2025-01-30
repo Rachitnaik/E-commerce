@@ -2,11 +2,12 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
 const Product = sequelize.define(
-  "Product",
+  "product",
   {
-    id: {
+    product_id: {
       primaryKey: true,
       type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4, // Auto-generate UUID if not provided
     },
     product_name: {
       type: DataTypes.STRING,
@@ -20,22 +21,30 @@ const Product = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: "category", // Table name of the Category model
-        key: "category_id", // Column name in the Category model
+        model: "category",
+        key: "category_id",
       },
     },
     product_type_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: "producttype", // Table name of the ProductType model
-        key: "product_type_id", // Column name in the ProductType model
+        model: "producttype",
+        key: "product_type_id",
       },
+    },
+    price: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true, // Allow null for optional pricing
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
   },
   {
     tableName: "product",
-    timestamps: false, // Disable createdAt/updatedAt if not needed
+    timestamps: false,
   }
 );
 
