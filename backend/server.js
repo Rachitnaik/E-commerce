@@ -1,6 +1,6 @@
 require("dotenv").config(); // Load .env file
 const express = require("express");
-const sequelize = require("./config/database");
+const db = require("./config/database");
 const {
   Product,
   Review,
@@ -9,6 +9,7 @@ const {
   ProductType,
 } = require("./models/associate"); // Import models
 
+const { Op } = require("sequelize");
 const app = express();
 const port = 3000;
 
@@ -18,8 +19,8 @@ app.use(express.json()); // To parse JSON request bodies
 // Test database connection
 (async () => {
   try {
-    await sequelize.authenticate();
-    await sequelize.sync();
+    await db.authenticate();
+    await db.sync();
     console.log("Connected to PostgreSQL using Sequelize!");
   } catch (error) {
     console.error("Unable to connect to the database:", error);
@@ -28,8 +29,46 @@ app.use(express.json()); // To parse JSON request bodies
 
 // Routes
 app.get("/products", async (req, res) => {
+  const { color, minPrice, maxPrice, categoryId, productTypeId, size } =
+    req.query;
+
   try {
+    const filters = {};
+
+    // Filter by price range (price is a direct field in the table)
+    if (minPrice || maxPrice) {
+      filters.price = {};
+      if (minPrice) filters.price[Op.gte] = parseFloat(minPrice);
+      if (maxPrice) filters.price[Op.lte] = parseFloat(maxPrice);
+    }
+
+    // Filter by category_id (direct field in the table)
+    if (categoryId) {
+      filters.category_id = categoryId;
+    }
+
+    // Filter by product_type_id (direct field in the table)
+    if (productTypeId) {
+      filters.product_type_id = productTypeId;
+    }
+
+    // Filter by size in features column (JSONB)
+    if (size) {
+      filters.features = {
+        [Op.contains]: [{ size: size }],
+      };
+    }
+
+    // Filter by color in features column (JSONB)
+    if (color) {
+      filters.features = {
+        [Op.contains]: [{ color: color }],
+      };
+    }
+
+    // Fetch products based on the filters
     const products = await Product.findAll({
+      where: filters,
       include: [
         {
           model: Category,
@@ -43,14 +82,24 @@ app.get("/products", async (req, res) => {
         },
       ],
     });
-    res.json(products);
+
+    // Filter features array on the response to only include the relevant feature
+    const filteredProducts = products.map((product) => {
+      const filteredFeatures = product.features.filter(
+        (feature) =>
+          (!size || feature.size.toLowerCase() === size.toLowerCase()) &&
+          (!color || feature.color.toLowerCase() === color.toLowerCase())
+      );
+      return { ...product.toJSON(), features: filteredFeatures };
+    });
+
+    res.json(filteredProducts);
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-// In server.js
+//on select of one product
 app.get("/products/:product_id", async (req, res) => {
   const { product_id } = req.params;
   try {
@@ -81,6 +130,8 @@ app.get("/products/:product_id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+//filter based on recently added products
 
 // Start the server
 app.listen(port, () => {
