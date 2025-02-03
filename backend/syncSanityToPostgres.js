@@ -66,4 +66,4 @@ async function syncSanityToPostgres() {
 }
 
 // Run the sync function
-syncSanityToPostgres();
+module.exports = syncSanityToPostgres;

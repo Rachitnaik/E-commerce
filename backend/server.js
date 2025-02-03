@@ -1,6 +1,7 @@
 require("dotenv").config(); // Load .env file
 const express = require("express");
 const db = require("./config/database");
+const syncSanityToPostgres = require("./syncSanityToPostgres");
 const {
   Product,
   Review,
@@ -33,6 +34,8 @@ app.get("/products", async (req, res) => {
     req.query;
 
   try {
+    syncSanityToPostgres();
+
     const filters = {};
 
     // Filter by price range (price is a direct field in the table)
