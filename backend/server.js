@@ -66,6 +66,8 @@ app.get("/products", async (req, res) => {
       };
     }
 
+    const totalProducts = await Product.count({ where: filters });
+
     // Fetch products based on the filters
     const products = await Product.findAll({
       where: filters,
@@ -93,7 +95,10 @@ app.get("/products", async (req, res) => {
       return { ...product.toJSON(), features: filteredFeatures };
     });
 
-    res.json(filteredProducts);
+    res.json({
+      total_products: totalProducts,
+      products: filteredProducts,
+    });
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).json({ error: "Internal server error" });
