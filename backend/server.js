@@ -29,6 +29,12 @@ app.use(express.json()); // To parse JSON request bodies
   }
 })();
 
+const calculateAverageRating = (reviews) => {
+  if (!reviews || reviews.length === 0) return 0;
+  const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+  return Number((totalRating / reviews.length).toFixed(1)); // Rounded to 1 decimal
+};
+
 // Routes
 app.get("/products", async (req, res) => {
   const { color, minPrice, maxPrice, categoryId, productTypeId, size } =
@@ -86,6 +92,11 @@ app.get("/products", async (req, res) => {
           as: "producttype",
           attributes: ["product_type_name"], // Only fetch product_type_name
         },
+        {
+          model: Review,
+          as: "reviews",
+          attributes: ["rating"],
+        },
       ],
     });
 
@@ -96,7 +107,13 @@ app.get("/products", async (req, res) => {
           (!size || feature.size.toLowerCase() === size.toLowerCase()) &&
           (!color || feature.color.toLowerCase() === color.toLowerCase())
       );
-      return { ...product.toJSON(), features: filteredFeatures };
+
+      return {
+        ...product.toJSON(),
+        description: product.description ?? "",
+        features: filteredFeatures,
+        averageRating: calculateAverageRating(product.reviews), // Include overall product rating
+      };
     });
 
     res.json({
@@ -130,13 +147,14 @@ app.get("/products/:product_id", async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    // Count the number of reviews
-    const reviewCount = product.reviews ? product.reviews.length : 0;
-
     // Return the product with its reviews
     res.json({
-      product,
-      reviewCount,
+      product: {
+        ...product.toJSON(),
+        description: product.description ?? "", // Replace null with an empty string
+      },
+      reviewCount: product.reviews.length,
+      averageRating: calculateAverageRating(product.reviews),
     });
   } catch (error) {
     console.error("Error fetching product details:", error);
