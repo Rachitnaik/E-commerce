@@ -8,7 +8,8 @@ const {
   User,
   Category,
   ProductType,
-} = require("./models/associate"); // Import models
+} = require("./models/associate");
+const Feedback = require("./models/feedback");
 
 const { Op } = require("sequelize");
 const app = express();
@@ -129,9 +130,13 @@ app.get("/products/:product_id", async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
+    // Count the number of reviews
+    const reviewCount = product.reviews ? product.reviews.length : 0;
+
     // Return the product with its reviews
     res.json({
       product,
+      reviewCount,
     });
   } catch (error) {
     console.error("Error fetching product details:", error);
@@ -139,7 +144,22 @@ app.get("/products/:product_id", async (req, res) => {
   }
 });
 
-//filter based on recently added products
+//feedback api
+
+app.get("/feedback", async (req, res) => {
+  const feedback = await Feedback.findAll();
+  const count = await Feedback.count();
+
+  if (!feedback) {
+    return res.status(404).json({ error: "No Feedbacks" });
+  }
+
+  // Return the product with its reviews
+  res.json({
+    count,
+    feedback,
+  });
+});
 
 // Start the server
 app.listen(port, () => {

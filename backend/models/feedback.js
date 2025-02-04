@@ -29,13 +29,13 @@ const Feedback = sequelize.define(
         key: "user_id",
       },
     },
-    date: {
+    feedback_date: {
       type: DataTypes.DATE,
       allowNull: true, // Allow null if date is not provided
     },
   },
   {
-    tableName: "feedback",
+    tableName: "feedbacktable",
     timestamps: false, // Disable createdAt/updatedAt if not needed
   }
 );
