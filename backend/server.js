@@ -34,6 +34,7 @@ const calculateAverageRating = (reviews) => {
   const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
   return Number((totalRating / reviews.length).toFixed(1)); // Rounded to 1 decimal
 };
+syncSanityToPostgres();
 
 // Routes
 app.get("/products", async (req, res) => {
@@ -41,8 +42,6 @@ app.get("/products", async (req, res) => {
     req.query;
 
   try {
-    syncSanityToPostgres();
-
     const filters = {};
 
     // Filter by price range (price is a direct field in the table)
@@ -52,27 +51,16 @@ app.get("/products", async (req, res) => {
       if (maxPrice) filters.price[Op.lte] = parseFloat(maxPrice);
     }
 
-    // Filter by category_id (direct field in the table)
-    if (categoryId) {
-      filters.category_id = categoryId;
-    }
+    Object.assign(
+      filters,
+      categoryId && { category_id: categoryId },
+      productTypeId && { product_type_id: productTypeId }
+    );
 
-    // Filter by product_type_id (direct field in the table)
-    if (productTypeId) {
-      filters.product_type_id = productTypeId;
-    }
-
-    // Filter by size in features column (JSONB)
-    if (size) {
+    // Filter by size and color in features column (JSONB)
+    if (size || color) {
       filters.features = {
-        [Op.contains]: [{ size: size }],
-      };
-    }
-
-    // Filter by color in features column (JSONB)
-    if (color) {
-      filters.features = {
-        [Op.contains]: [{ color: color }],
+        [Op.contains]: [{ ...(size && { size }), ...(color && { color }) }],
       };
     }
 
@@ -166,7 +154,7 @@ app.get("/products/:product_id", async (req, res) => {
 
 app.get("/feedback", async (req, res) => {
   const feedback = await Feedback.findAll();
-  const count = await Feedback.count();
+  const count = feedback.length;
 
   if (!feedback) {
     return res.status(404).json({ error: "No Feedbacks" });
