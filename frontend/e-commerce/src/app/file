@@ -1,0 +1,21 @@
+ <Box
+        sx={{
+          backgroundColor: "black",
+          color: "white",
+          textAlign: "center",
+          p: "5px 10px",
+          fontSize: "0.875rem",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "relative",
+        }}
+      >
+        Sign up and get 20% off on your first order.
+        <Typography component="span" sx={{ textDecoration: "underline", cursor: "pointer", ml: 1 }}>
+          Sign Up Now
+        </Typography>
+        <IconButton sx={{ position: "absolute", right: 10, color: "white" }}>
+          <Close fontSize="small" />
+        </IconButton>
+      </Box>
