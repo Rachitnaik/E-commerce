@@ -13,7 +13,7 @@ const Feedback = require("./models/feedback");
 
 const { Op } = require("sequelize");
 const app = express();
-const port = 3000;
+const port = PG_PORT || 3000;
 
 // Middleware
 app.use(express.json()); // To parse JSON request bodies
