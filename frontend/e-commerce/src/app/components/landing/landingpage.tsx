@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Button, Typography, Box, Container, Divider } from '@mui/material';
 
 import Grid from '@mui/material/Grid2';
-import '../globals.css';
+import '../../globals.css';
 import Marquee from "react-fast-marquee";
 
 export default function FashionLanding() {

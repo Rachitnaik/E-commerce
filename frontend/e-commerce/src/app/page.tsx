@@ -3,20 +3,75 @@
 import React, { useState } from 'react';
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, Tooltip, MenuItem } from '@mui/material';
 import { Menu as MenuIcon, ShoppingCart, AccountCircle, Close } from "@mui/icons-material";
-import FashionLanding from './landing/landingpage';
+import FashionLanding from './components/landing/landingpage';
 import './globals.css'; // Import the global styles
+import ProductListing from './components/ProductListing/productlisting';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+const dummyProducts = [
+  {
+    id: 1,
+    name: "Smartphone X",
+    image: "https://via.placeholder.com/150",
+    price: 699,
+    originalPrice: 799,
+    rating: 4.5,
+    discount: 13,
+  },
+  {
+    id: 2,
+    name: "Wireless Earbuds",
+    image: "https://via.placeholder.com/150",
+    price: 99,
+    originalPrice: 129,
+    rating: 4.2,
+    discount: 23,
+  },
+  {
+    id: 3,
+    name: "Gaming Laptop",
+    image: "https://via.placeholder.com/150",
+    price: 1299,
+    originalPrice: 1499,
+    rating: 4.8,
+    discount: 13,
+  },
+  {
+    id: 4,
+    name: "Smartwatch Pro",
+    image: "https://via.placeholder.com/150",
+    price: 249,
+    rating: 4.1,
+  },
+  {
+    id: 5,
+    name: "4K LED TV",
+    image: "https://via.placeholder.com/150",
+    price: 899,
+    originalPrice: 999,
+    rating: 4.6,
+    discount: 10,
+  },
+];
+
+const MenuList = ({ items, handleClose }: { items: string[], handleClose: () => void }) => (
+  <>
+    {items.map((item) => (
+      <MenuItem key={item} onClick={handleClose}>
+        <Typography sx={{ textAlign: 'center' }}>{item}</Typography>
+      </MenuItem>
+    ))}
+  </>
+);
 
 const ResponsiveAppBar = () => {
   const [navMenuAnchor, setNavMenuAnchor] = useState<null | HTMLElement>(null);
   const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
 
-  const handleMenuOpen = (setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>) =>
-    (event: React.MouseEvent<HTMLElement>) => setter(event.currentTarget);
-
-  const handleMenuClose = (setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>) => () => setter(null);
+  const handleMenuToggle = (setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>) =>
+    (event: React.MouseEvent<HTMLElement>) => setter(prev => (prev ? null : event.currentTarget));
 
   return (
     <>
@@ -38,15 +93,11 @@ const ResponsiveAppBar = () => {
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <IconButton size="large" onClick={handleMenuOpen(setNavMenuAnchor)} color="inherit">
+              <IconButton size="large" onClick={handleMenuToggle(setNavMenuAnchor)} color="inherit">
                 <MenuIcon />
               </IconButton>
-              <Menu anchorEl={navMenuAnchor} open={Boolean(navMenuAnchor)} onClose={handleMenuClose(setNavMenuAnchor)} sx={{ display: { xs: 'block', md: 'none' } }} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleMenuClose(setNavMenuAnchor)}>
-                    <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
-                  </MenuItem>
-                ))}
+              <Menu anchorEl={navMenuAnchor} open={Boolean(navMenuAnchor)} onClose={handleMenuToggle(setNavMenuAnchor)} sx={{ display: { xs: 'block', md: 'none' } }} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
+                <MenuList items={pages} handleClose={() => setNavMenuAnchor(null)} />
               </Menu>
             </Box>
 
@@ -65,16 +116,12 @@ const ResponsiveAppBar = () => {
             <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center", gap: 2 }}>
               <ShoppingCart />
               <Tooltip title="User Menu">
-                <IconButton onClick={handleMenuOpen(setUserMenuAnchor)}>
+                <IconButton onClick={handleMenuToggle(setUserMenuAnchor)}>
                   <AccountCircle />
                 </IconButton>
               </Tooltip>
-              <Menu anchorEl={userMenuAnchor} open={Boolean(userMenuAnchor)} onClose={handleMenuClose(setUserMenuAnchor)} sx={{ mt: '45px' }} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleMenuClose(setUserMenuAnchor)}>
-                    <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                  </MenuItem>
-                ))}
+              <Menu anchorEl={userMenuAnchor} open={Boolean(userMenuAnchor)} onClose={handleMenuToggle(setUserMenuAnchor)} sx={{ mt: '45px' }} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
+                <MenuList items={settings} handleClose={() => setUserMenuAnchor(null)} />
               </Menu>
             </Box>
           </Toolbar>
@@ -82,6 +129,7 @@ const ResponsiveAppBar = () => {
       </AppBar>
 
       <FashionLanding />
+      <ProductListing title="Featured Products" products={dummyProducts} />
     </>
   );
 };
