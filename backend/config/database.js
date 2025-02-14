@@ -1,16 +1,16 @@
+require("dotenv").config(); // Load .env variables
 const { Sequelize } = require("sequelize");
-const config = require("./config.json"); // Path to the config.json file
 
 const sequelize = new Sequelize(
-  config.development.database,
-  config.development.username,
-  config.development.password,
+  process.env.PG_DATABASE,
+  process.env.PG_USER,
+  process.env.PG_PASSWORD,
   {
-    host: config.development.host,
-    port: config.development.port,
-    dialect: config.development.dialect,
-    dialectOptions: config.development.dialectOptions,
+    host: process.env.PG_HOST,
+    port: process.env.PG_PORT,
+    dialect: "postgres",
+    logging: false, // Disable logging if needed
   }
 );
 
-module.exports = sequelize; // Export the connection
+module.exports = sequelize;
