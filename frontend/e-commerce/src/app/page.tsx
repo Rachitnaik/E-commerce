@@ -6,6 +6,7 @@ import { Menu as MenuIcon, ShoppingCart, AccountCircle, Close } from "@mui/icons
 import FashionLanding from './components/landing/landingpage';
 import './globals.css'; // Import the global styles
 import ProductListing from './components/ProductListing/productlisting';
+import LoginButton from './components/Login';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -80,6 +81,7 @@ const ResponsiveAppBar = () => {
         <Typography component="span" sx={{ textDecoration: "underline", cursor: "pointer", ml: 1 }}>
           Sign Up Now
         </Typography>
+
         <IconButton sx={{ position: "absolute", right: 10, color: "white" }}>
           <Close fontSize="small" />
         </IconButton>
@@ -119,7 +121,9 @@ const ResponsiveAppBar = () => {
                 <IconButton onClick={handleMenuToggle(setUserMenuAnchor)}>
                   <AccountCircle />
                 </IconButton>
+
               </Tooltip>
+              <LoginButton />
               <Menu anchorEl={userMenuAnchor} open={Boolean(userMenuAnchor)} onClose={handleMenuToggle(setUserMenuAnchor)} sx={{ mt: '45px' }} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
                 <MenuList items={settings} handleClose={() => setUserMenuAnchor(null)} />
               </Menu>
