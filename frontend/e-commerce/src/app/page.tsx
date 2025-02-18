@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, Tooltip, MenuItem } from '@mui/material';
 import { Menu as MenuIcon, ShoppingCart, AccountCircle, Close } from "@mui/icons-material";
 import FashionLanding from './components/landing/landingpage';
 import './globals.css'; // Import the global styles
 import ProductListing from './components/ProductListing/productlisting';
 import LoginButton from './components/Login';
+import axios from "axios";
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -57,6 +58,9 @@ const dummyProducts = [
   },
 ];
 
+
+
+
 const MenuList = ({ items, handleClose }: { items: string[], handleClose: () => void }) => (
   <>
     {items.map((item) => (
@@ -70,9 +74,26 @@ const MenuList = ({ items, handleClose }: { items: string[], handleClose: () => 
 const ResponsiveAppBar = () => {
   const [navMenuAnchor, setNavMenuAnchor] = useState<null | HTMLElement>(null);
   const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
+  const [products, setProducts] = useState([]);
+
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("https://e-commerce-b2tt.onrender.com/products");
+        setProducts(response.data.products); // Assuming the response data is an array of products
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const handleMenuToggle = (setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>) =>
     (event: React.MouseEvent<HTMLElement>) => setter(prev => (prev ? null : event.currentTarget));
+
+
 
   return (
     <>
@@ -133,7 +154,7 @@ const ResponsiveAppBar = () => {
       </AppBar>
 
       <FashionLanding />
-      <ProductListing title="Featured Products" products={dummyProducts} />
+      <ProductListing title="Featured Products" products={products} />
     </>
   );
 };
