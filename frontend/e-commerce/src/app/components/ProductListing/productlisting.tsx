@@ -1,45 +1,31 @@
 "use client";
 import Image from 'next/image';
-import { Box, Typography, Button, Card, CardContent, CardMedia, Rating, useMediaQuery } from "@mui/material";
+import { Box, Typography, Button, Card, CardContent, Rating, useMediaQuery } from "@mui/material";
 import { FC } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
+import { Product } from "../../utils"
+import '../../globals.css';
 
-
-
-interface Feature {
-    _key: string;
-    size: string;
-    color: string;
-    image: string;
-    isDefault: boolean;
-}
-interface Product {
-    product_id: number;
-    product_name: string;
-    image: string;
-    price: number;
-    averageRating: number;
-    features: Feature[];
-}
 
 interface ProductListingProps {
     title: string;
     products: Product[];
 }
 
-
 const ProductListing: FC<ProductListingProps> = ({ title, products }) => {
     const isMobile = useMediaQuery("(max-width: 768px)");
+    const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1024px)");
+    const isDesktop = useMediaQuery("(min-width: 1025px)");
 
-    console.log("products inisde lising", products)
-
+    // Limit the number of products for tablet and desktop screens to 4
+    const displayedProducts = isMobile ? products : products.slice(0, 4);
 
     return (
         <Box textAlign="center" py={4}>
-            <Typography variant="h4" fontWeight="bold" mb={3}>
+            <Typography variant="h4" fontWeight="bold" mb={3} sx={{ color: "var(--heading-color)" }}>
                 {title}
             </Typography>
 
@@ -52,9 +38,8 @@ const ProductListing: FC<ProductListingProps> = ({ title, products }) => {
                     slidesPerView={1}
                     spaceBetween={10}
                 >
-                    {products.map((product, index) => {
-                        // Check for default image in features, fallback to product.image
-                        const imageUrl = product.features?.find((feature) => feature.isDefault)?.image || product.image;
+                    {displayedProducts.map((product, index) => {
+                        const imageUrl = product.features?.find((feature) => feature.isDefault)?.image || '/file.svg';
 
                         return (
                             <SwiperSlide key={product.product_id}>
@@ -63,7 +48,7 @@ const ProductListing: FC<ProductListingProps> = ({ title, products }) => {
                                         maxWidth: 200,
                                         p: 2,
                                         borderRadius: 3,
-                                        boxShadow: index === 1 ? "0px 0px 5px 3px blue" : "none",
+                                        boxShadow: "none",
                                         backgroundColor: "#f7f7f7",
                                         margin: "0 auto",
                                     }}
@@ -93,9 +78,8 @@ const ProductListing: FC<ProductListingProps> = ({ title, products }) => {
                 </Swiper>
             ) : (
                 <Box display="flex" justifyContent="center" gap={3} flexWrap="wrap">
-                    {products.map((product, index) => {
-                        // Check for default image in features, fallback to product.image
-                        const imageUrl = product.features?.find((feature) => feature.isDefault)?.image || product.image;
+                    {displayedProducts.map((product, index) => {
+                        const imageUrl = product.features?.find((feature) => feature.isDefault)?.image || '/file.svg';
 
                         return (
                             <Card
@@ -104,7 +88,7 @@ const ProductListing: FC<ProductListingProps> = ({ title, products }) => {
                                     maxWidth: 200,
                                     p: 2,
                                     borderRadius: 3,
-                                    boxShadow: index === 1 ? "0px 0px 5px 3px blue" : "none",
+                                    boxShadow: "none",
                                     backgroundColor: "#f7f7f7",
                                 }}
                             >
@@ -137,8 +121,6 @@ const ProductListing: FC<ProductListingProps> = ({ title, products }) => {
             </Button>
         </Box>
     );
-
-
 };
 
 export default ProductListing;

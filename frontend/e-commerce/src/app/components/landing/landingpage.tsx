@@ -10,71 +10,75 @@ export default function FashionLanding() {
 
     return (
 
-        <Container maxWidth="lg" sx={{ backgroundColor: "var(--landing-background)", mt: 3 }} className="landing-page">
+        <>
 
-            <Grid container spacing={4} alignItems="center">
+            <Container maxWidth="lg" sx={{ backgroundColor: "var(--landing-background)", mt: 4 }} className="landing-page">
 
-                {/* Left Side Content */}
+                <Grid container spacing={4} alignItems="center">
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                    {/* Left Side Content */}
 
-                    <Typography variant="h3" fontWeight="bold" gutterBottom>
+                    <Grid size={{ xs: 12, md: 6 }}>
 
-                        FIND CLOTHES THAT MATCH YOUR STYLE
+                        <Typography variant="h3" fontWeight="bold" gutterBottom>
 
-                    </Typography>
+                            FIND CLOTHES THAT MATCH YOUR STYLE
 
-                    <Typography variant="body1" color="text.secondary" paragraph>
+                        </Typography>
 
-                        Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style.
+                        <Typography variant="body1" color="text.secondary" paragraph>
 
-                    </Typography>
+                            Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style.
 
-                    <Button variant="contained" size="large" sx={{ mt: 2, backgroundColor: "var(--button-color)", borderRadius: 20, width: "40%" }}>
+                        </Typography>
 
-                        Shop Now
+                        <Button variant="contained" size="large" sx={{ mt: 2, backgroundColor: "var(--button-color)", borderRadius: 20, width: "40%" }}>
 
-                    </Button>
+                            Shop Now
 
-                    <Box display="flex" justifyContent={{ xs: 'center', md: 'flex-start' }} gap={4} mt={4}>
+                        </Button>
 
-                        <Box textAlign="center">
+                        <Box display="flex" justifyContent={{ xs: 'center', md: 'flex-start' }} gap={4} mt={4}>
 
-                            <Typography variant="h5" fontWeight="bold">200+</Typography>
+                            <Box textAlign="center">
 
-                            <Typography color="text.secondary">International Brands</Typography>
+                                <Typography variant="h5" fontWeight="bold">200+</Typography>
+
+                                <Typography color="text.secondary">International Brands</Typography>
+
+                            </Box>
+
+                            <Box textAlign="center">
+
+                                <Typography variant="h5" fontWeight="bold">2,000+</Typography>
+
+                                <Typography color="text.secondary">High-Quality Products</Typography>
+
+                            </Box>
+
+                            <Box textAlign="center">
+
+                                <Typography variant="h5" fontWeight="bold">30,000+</Typography>
+
+                                <Typography color="text.secondary">Happy Customers</Typography>
+
+                            </Box>
 
                         </Box>
 
-                        <Box textAlign="center">
+                    </Grid>
 
-                            <Typography variant="h5" fontWeight="bold">2,000+</Typography>
 
-                            <Typography color="text.secondary">High-Quality Products</Typography>
 
-                        </Box>
+                    {/* Right Side Image */}
 
-                        <Box textAlign="center">
-
-                            <Typography variant="h5" fontWeight="bold">30,000+</Typography>
-
-                            <Typography color="text.secondary">Happy Customers</Typography>
-
-                        </Box>
-
-                    </Box>
-
+                    <Grid size={{ xs: 12, md: 6 }} display="flex" justifyContent="center">
+                        <Image src="/bannerImgbg.png" alt="Fashion Models" width={430} height={500} />
+                    </Grid>
                 </Grid>
+                {/* Brand Logos */}
 
-
-
-                {/* Right Side Image */}
-
-                <Grid size={{ xs: 12, md: 6 }} display="flex" justifyContent="center">
-                    <Image src="/bannerImgbg.png" alt="Fashion Models" width={430} height={500} />
-                </Grid>
-            </Grid>
-            {/* Brand Logos */}
+            </Container >
             <Divider sx={{ my: 6 }} />
 
             <Box sx={{ backgroundColor: "black", py: 2 }}>
@@ -94,7 +98,8 @@ export default function FashionLanding() {
                 </Marquee>
             </Box>
 
-        </Container >
+        </>
+
 
     );
 

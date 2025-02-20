@@ -1,64 +1,19 @@
 'use client';
-
 import React, { useState, useEffect } from 'react';
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, Tooltip, MenuItem } from '@mui/material';
 import { Menu as MenuIcon, ShoppingCart, AccountCircle, Close } from "@mui/icons-material";
 import FashionLanding from './components/landing/landingpage';
-import './globals.css'; // Import the global styles
+import './globals.css';
 import ProductListing from './components/ProductListing/productlisting';
 import LoginButton from './components/Login';
 import axios from "axios";
+import { Product } from './utils';
+import Dress from './components/Dress';
+import Footer from './components/Footer';
+import CustomerReviews from './components/cusstomerReviews';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
-const dummyProducts = [
-  {
-    id: 1,
-    name: "Smartphone X",
-    image: "https://via.placeholder.com/150",
-    price: 699,
-    originalPrice: 799,
-    rating: 4.5,
-    discount: 13,
-  },
-  {
-    id: 2,
-    name: "Wireless Earbuds",
-    image: "https://via.placeholder.com/150",
-    price: 99,
-    originalPrice: 129,
-    rating: 4.2,
-    discount: 23,
-  },
-  {
-    id: 3,
-    name: "Gaming Laptop",
-    image: "https://via.placeholder.com/150",
-    price: 1299,
-    originalPrice: 1499,
-    rating: 4.8,
-    discount: 13,
-  },
-  {
-    id: 4,
-    name: "Smartwatch Pro",
-    image: "https://via.placeholder.com/150",
-    price: 249,
-    rating: 4.1,
-  },
-  {
-    id: 5,
-    name: "4K LED TV",
-    image: "https://via.placeholder.com/150",
-    price: 899,
-    originalPrice: 999,
-    rating: 4.6,
-    discount: 10,
-  },
-];
-
-
 
 
 const MenuList = ({ items, handleClose }: { items: string[], handleClose: () => void }) => (
@@ -70,28 +25,46 @@ const MenuList = ({ items, handleClose }: { items: string[], handleClose: () => 
     ))}
   </>
 );
-
 const ResponsiveAppBar = () => {
   const [navMenuAnchor, setNavMenuAnchor] = useState<null | HTMLElement>(null);
   const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
-  const [products, setProducts] = useState([]);
-
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get("https://e-commerce-b2tt.onrender.com/products");
-        setProducts(response.data.products); // Assuming the response data is an array of products
+        setProducts(response.data.products);
+
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
-
     fetchProducts();
   }, []);
 
+
+  const newA: Product[] = [...products].sort((x, y) => new Date(y.date).getTime() - new Date(x.date).getTime());
+
+  const sortedProducts: Product[] = [...products].sort(
+    (x, y) => y.averageRating - x.averageRating
+  );
+
+
   const handleMenuToggle = (setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>) =>
     (event: React.MouseEvent<HTMLElement>) => setter(prev => (prev ? null : event.currentTarget));
+
+  const reviews = [
+    { name: "Sarah M.", review: "I'm blown away by the quality and style of the clothes I received from Shop.co.", rating: 5 },
+    { name: "Alex K.", review: "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co.", rating: 5 },
+    { name: "James L.", review: "The selection of clothes is not only diverse but also on-point with the latest trends.", rating: 5 },
+    { name: "Sarah M.", review: "I'm blown away by the quality and style of the clothes I received from Shop.co.", rating: 5 },
+    { name: "Alex K.", review: "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co.", rating: 5 },
+    { name: "James L.", review: "The selection of clothes is not only diverse but also on-point with the latest trends.", rating: 5 },
+    { name: "Sarah M.", review: "I'm blown away by the quality and style of the clothes I received from Shop.co.", rating: 5 },
+    { name: "Alex K.", review: "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co.", rating: 5 },
+    { name: "James L.", review: "The selection of clothes is not only diverse but also on-point with the latest trends.", rating: 5 },
+  ];
 
 
 
@@ -111,7 +84,7 @@ const ResponsiveAppBar = () => {
       <AppBar position="static" color="default" sx={{ backgroundColor: "var(--background-color)", color: "var(--text-color)" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <Typography variant="h6" component="a" href="#" sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none' }}>
+            <Typography variant="h6" component="a" href="#" sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, fontWeight: 700, letterSpacing: '.3rem', color: 'var(--heading-color)', textDecoration: 'none', }}>
               SHOP.CO
             </Typography>
 
@@ -124,23 +97,23 @@ const ResponsiveAppBar = () => {
               </Menu>
             </Box>
 
-            <Typography variant="h5" component="a" href="#" sx={{ mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1, fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none' }}>
+            <Typography variant="h5" component="a" href="#" sx={{ mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1, fontWeight: 700, letterSpacing: '.3rem', color: 'var(--heading-color)', textDecoration: 'none' }}>
               SHOP.CO
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (
-                <Button key={page} sx={{ my: 2, color: 'var(--text-color)', display: 'block' }}>
+                <Button key={page} sx={{ my: 2, color: 'var(--heading-color)', display: 'block' }}>
                   {page}
                 </Button>
               ))}
             </Box>
 
             <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center", gap: 2 }}>
-              <ShoppingCart />
+              <ShoppingCart sx={{ color: 'var(--heading-color)' }} />
               <Tooltip title="User Menu">
                 <IconButton onClick={handleMenuToggle(setUserMenuAnchor)}>
-                  <AccountCircle />
+                  <AccountCircle sx={{ color: 'var(--heading-color)' }} />
                 </IconButton>
 
               </Tooltip>
@@ -154,7 +127,12 @@ const ResponsiveAppBar = () => {
       </AppBar>
 
       <FashionLanding />
-      <ProductListing title="Featured Products" products={products} />
+      <ProductListing title="New Arrivals" products={newA} />
+      <ProductListing title="Top Selling" products={sortedProducts} />
+      <Dress></Dress>
+      <CustomerReviews reviews={reviews} />
+      <Footer />
+
     </>
   );
 };
