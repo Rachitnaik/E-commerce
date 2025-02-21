@@ -1,7 +1,10 @@
 import { Box, Container, Grid, Typography, TextField, Button, IconButton } from "@mui/material";
-import { Facebook, Twitter, Instagram, Email } from "@mui/icons-material";
+import { Facebook, Twitter, Instagram, Email, LightMode, DarkMode } from "@mui/icons-material";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Footer() {
+
+    const { theme, toggleTheme } = useTheme();
     return (
         <Box sx={{ bgcolor: "var(--landing-background)", mt: 4, pt: 4 }}>
             {/* Newsletter Section */}
@@ -90,6 +93,14 @@ export default function Footer() {
                             ))}
                         </Grid>
                     ))}
+
+                    {/* Toggle Theme Button */}
+                    <Grid item xs={12} sm={2} sx={{ textAlign: "center" }}>
+                        <IconButton onClick={toggleTheme} color="primary">
+                            {theme === "light" ? <DarkMode /> : <LightMode />}
+                        </IconButton>
+                        <Typography variant="body2">Toggle Theme</Typography>
+                    </Grid>
                 </Grid>
             </Container>
 
