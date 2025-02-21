@@ -11,7 +11,7 @@ const dressStyles = [
 
 export default function HomePage() {
     return (
-        <Box sx={{ backgroundColor: "#f5f5f5", py: 4, borderRadius: 3, mx: "auto", maxWidth: 1000 }}>
+        <Box sx={{ backgroundColor: "var(--landing-background)", py: 4, borderRadius: 3, mx: "auto", maxWidth: 1000 }}>
             <Container>
                 {/* Section Title */}
                 <Box sx={{ textAlign: "center", mb: 3 }}>

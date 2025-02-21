@@ -1,16 +1,17 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, Tooltip, MenuItem } from '@mui/material';
 import { Menu as MenuIcon, ShoppingCart, AccountCircle, Close } from "@mui/icons-material";
-import FashionLanding from './components/landing/landingpage';
+import FashionLanding from './components/Landing/landingpage';
 import './globals.css';
 import ProductListing from './components/ProductListing/productlisting';
 import LoginButton from './components/Login';
 import axios from "axios";
-import { Product } from './utils';
+import { Product } from './utils/interfaces';
 import Dress from './components/Dress';
 import Footer from './components/Footer';
 import CustomerReviews from './components/cusstomerReviews';
+import ProductListingSkeleton from './components/ProductListing/ProductListingSkeleton';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -29,6 +30,7 @@ const ResponsiveAppBar = () => {
   const [navMenuAnchor, setNavMenuAnchor] = useState<null | HTMLElement>(null);
   const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -38,6 +40,8 @@ const ResponsiveAppBar = () => {
 
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProducts();
@@ -58,7 +62,7 @@ const ResponsiveAppBar = () => {
     { name: "Sarah M.", review: "I'm blown away by the quality and style of the clothes I received from Shop.co.", rating: 5 },
     { name: "Alex K.", review: "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co.", rating: 5 },
     { name: "James L.", review: "The selection of clothes is not only diverse but also on-point with the latest trends.", rating: 5 },
-    { name: "Sarah M.", review: "I'm blown away by the quality and style of the clothes I received from Shop.co.", rating: 5 },
+    { name: "Sarah M.", review: "I'm blown away by the quality and style of the clothes I received from Shop.co.", rating: 2.5 },
     { name: "Alex K.", review: "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co.", rating: 5 },
     { name: "James L.", review: "The selection of clothes is not only diverse but also on-point with the latest trends.", rating: 5 },
     { name: "Sarah M.", review: "I'm blown away by the quality and style of the clothes I received from Shop.co.", rating: 5 },
@@ -127,8 +131,8 @@ const ResponsiveAppBar = () => {
       </AppBar>
 
       <FashionLanding />
-      <ProductListing title="New Arrivals" products={newA} />
-      <ProductListing title="Top Selling" products={sortedProducts} />
+      {loading ? <ProductListingSkeleton title="New Arrivals" /> : <ProductListing title="New Arrivals" products={newA} />}
+      {loading ? <ProductListingSkeleton title="Top Selling" /> : <ProductListing title="Top Selling" products={sortedProducts} />}
       <Dress></Dress>
       <CustomerReviews reviews={reviews} />
       <Footer />

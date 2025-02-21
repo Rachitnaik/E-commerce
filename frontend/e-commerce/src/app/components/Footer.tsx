@@ -3,7 +3,7 @@ import { Facebook, Twitter, Instagram, Email } from "@mui/icons-material";
 
 export default function Footer() {
     return (
-        <Box sx={{ bgcolor: "#f8f8f8", mt: 4, pt: 4 }}>
+        <Box sx={{ bgcolor: "var(--landing-background)", mt: 4, pt: 4 }}>
             {/* Newsletter Section */}
             <Box sx={{ bgcolor: "black", color: "white", py: 4, textAlign: "center" }}>
                 <Typography variant="h5" fontWeight="bold">
@@ -56,7 +56,7 @@ export default function Footer() {
                         <Typography variant="h6" fontWeight="bold">
                             SHOP.CO
                         </Typography>
-                        <Typography variant="body2" color="textSecondary">
+                        <Typography variant="body2" >
                             We have clothes that suit your style and which you’re proud to wear. From women to men.
                         </Typography>
                         <Box sx={{ mt: 1 }}>
@@ -84,7 +84,7 @@ export default function Footer() {
                                 {section.title}
                             </Typography>
                             {section.links.map((link) => (
-                                <Typography key={link} variant="body2" color="textSecondary" sx={{ mt: 0.5 }}>
+                                <Typography key={link} variant="body2" sx={{ mt: 0.5 }}>
                                     {link}
                                 </Typography>
                             ))}

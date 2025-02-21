@@ -26,7 +26,7 @@ export default function FashionLanding() {
 
                         </Typography>
 
-                        <Typography variant="body1" color="text.secondary" paragraph>
+                        <Typography variant="body1" paragraph>
 
                             Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style.
 
@@ -44,7 +44,7 @@ export default function FashionLanding() {
 
                                 <Typography variant="h5" fontWeight="bold">200+</Typography>
 
-                                <Typography color="text.secondary">International Brands</Typography>
+                                <Typography >International Brands</Typography>
 
                             </Box>
 
@@ -52,7 +52,7 @@ export default function FashionLanding() {
 
                                 <Typography variant="h5" fontWeight="bold">2,000+</Typography>
 
-                                <Typography color="text.secondary">High-Quality Products</Typography>
+                                <Typography >High-Quality Products</Typography>
 
                             </Box>
 
@@ -60,7 +60,7 @@ export default function FashionLanding() {
 
                                 <Typography variant="h5" fontWeight="bold">30,000+</Typography>
 
-                                <Typography color="text.secondary">Happy Customers</Typography>
+                                <Typography >Happy Customers</Typography>
 
                             </Box>
 
