@@ -15,6 +15,7 @@ const { Op } = require("sequelize");
 const app = express();
 const cors = require("cors");
 app.use(cors());
+
 const port = process.env.PG_PORT || 3000;
 
 // Middleware

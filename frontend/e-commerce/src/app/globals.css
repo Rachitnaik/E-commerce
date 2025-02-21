@@ -1,15 +1,17 @@
 :root {
   --background-color: white;
   --text-color: black;
-  --landing-background: white;
-  --button-color:black
+  --landing-background: #f7f7f7;
+  --button-color:black;
+  --heading-color:black;
 }
 
 [data-theme="dark"] {
-  --background-color: #121212;
+  --background-color: grey;
   --text-color: white;
-  --landing-background: #1e1e1e;
-  --button-color:white
+  --landing-background: black;
+  --button-color:black;
+  --heading-color:black;
 }
 
 body {

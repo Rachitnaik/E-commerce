@@ -42,7 +42,7 @@ async function syncSanityToPostgres() {
       } = sanityProduct;
 
       // Process features to replace image references with image URLs
-      const processedFeatures = features.map((feature) => ({
+      const processedFeatures = features?.map((feature) => ({
         ...feature,
         image: feature.image?.asset ? urlFor(feature.image.asset).url() : null,
       }));

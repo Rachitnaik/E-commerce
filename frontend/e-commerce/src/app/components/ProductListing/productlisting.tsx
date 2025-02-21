@@ -1,33 +1,30 @@
 "use client";
-
-import { Box, Typography, Button, Card, CardContent, CardMedia, Rating, useMediaQuery } from "@mui/material";
-import { FC } from "react";
+import Image from 'next/image';
+import { Box, Typography, Button, Card, CardContent, Rating, useMediaQuery } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
+import { Product } from "../../utils/interfaces"
+import '../../globals.css';
 
-interface Product {
-    id: number;
-    name: string;
-    image: string;
-    price: number;
-    originalPrice?: number;
-    rating: number;
-    discount?: number;
-}
 
 interface ProductListingProps {
     title: string;
     products: Product[];
 }
 
-const ProductListing: FC<ProductListingProps> = ({ title, products }) => {
+const ProductListing = ({ title, products }: ProductListingProps) => {
     const isMobile = useMediaQuery("(max-width: 768px)");
+    const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1024px)");
+    const isDesktop = useMediaQuery("(min-width: 1025px)");
+
+    // Limit the number of products for tablet and desktop screens to 4
+    const displayedProducts = isMobile ? products : products.slice(0, 4);
 
     return (
         <Box textAlign="center" py={4}>
-            <Typography variant="h4" fontWeight="bold" mb={3}>
+            <Typography variant="h4" fontWeight="bold" mb={3} sx={{ color: "var(--text-color)" }}>
                 {title}
             </Typography>
 
@@ -40,65 +37,85 @@ const ProductListing: FC<ProductListingProps> = ({ title, products }) => {
                     slidesPerView={1}
                     spaceBetween={10}
                 >
-                    {products.map((product, index) => (
-                        <SwiperSlide key={product.id}>
+                    {displayedProducts.map((product, index) => {
+                        const imageUrl = product.features?.find((feature) => feature.isDefault)?.image || '/file.svg';
+
+                        return (
+                            <SwiperSlide key={product.product_id}>
+                                <Card
+                                    sx={{
+                                        maxWidth: 200,
+                                        p: 2,
+                                        borderRadius: 3,
+                                        boxShadow: "none",
+                                        backgroundColor: "var(--landing-background)",
+                                        margin: "0 auto",
+                                    }}
+                                >
+                                    <Image
+                                        src={imageUrl}
+                                        alt={product.product_name}
+                                        width={200}
+                                        height={150}
+                                        style={{ objectFit: 'cover', borderRadius: '8px' }}
+                                    />
+                                    <CardContent>
+                                        <Typography variant="subtitle1" fontWeight="bold" color="var(--text-color)">
+                                            {product.product_name}
+                                        </Typography>
+                                        <Rating value={product.averageRating} precision={0.5} readOnly size="small" />
+                                        <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
+                                            <Typography variant="h6" fontWeight="bold" color="var(--text-color)">
+                                                ${product.price}
+                                            </Typography>
+                                        </Box>
+                                    </CardContent>
+                                </Card>
+                            </SwiperSlide>
+                        );
+                    })}
+                </Swiper>
+            ) : (
+                <Box display="flex" justifyContent="center" gap={3} flexWrap="wrap">
+                    {displayedProducts.map((product, index) => {
+                        const imageUrl = product.features?.find((feature) => feature.isDefault)?.image || '/file.svg';
+
+                        return (
                             <Card
+                                key={product.product_id}
                                 sx={{
                                     maxWidth: 200,
                                     p: 2,
                                     borderRadius: 3,
-                                    boxShadow: index === 1 ? "0px 0px 5px 3px blue" : "none",
-                                    backgroundColor: "#f7f7f7",
-                                    margin: "0 auto",
+                                    boxShadow: "none",
+                                    backgroundColor: "var(--landing-background)",
                                 }}
                             >
-                                <CardMedia component="img" height="150" image={product.image} alt={product.name} />
+                                <Image
+                                    src={imageUrl}
+                                    alt={product.product_name}
+                                    width={200}
+                                    height={150}
+                                    style={{ objectFit: 'cover', borderRadius: '8px' }}
+                                />
                                 <CardContent>
-                                    <Typography variant="subtitle1" fontWeight="bold">
-                                        {product.name}
+                                    <Typography variant="subtitle1" fontWeight="bold" color="var(--text-color)">
+                                        {product.product_name}
                                     </Typography>
-                                    <Rating value={product.rating} precision={0.5} readOnly size="small" />
+                                    <Rating value={product.averageRating} precision={0.5} readOnly size="small" />
                                     <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
-                                        <Typography variant="h6" fontWeight="bold">
+                                        <Typography variant="h6" fontWeight="bold" color="var(--text-color)">
                                             ${product.price}
                                         </Typography>
                                     </Box>
                                 </CardContent>
                             </Card>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
-            ) : (
-                <Box display="flex" justifyContent="center" gap={3} flexWrap="wrap">
-                    {products.map((product, index) => (
-                        <Card
-                            key={product.id}
-                            sx={{
-                                maxWidth: 200,
-                                p: 2,
-                                borderRadius: 3,
-                                boxShadow: index === 1 ? "0px 0px 5px 3px blue" : "none",
-                                backgroundColor: "#f7f7f7",
-                            }}
-                        >
-                            <CardMedia component="img" height="150" image={product.image} alt={product.name} />
-                            <CardContent>
-                                <Typography variant="subtitle1" fontWeight="bold">
-                                    {product.name}
-                                </Typography>
-                                <Rating value={product.rating} precision={0.5} readOnly size="small" />
-                                <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
-                                    <Typography variant="h6" fontWeight="bold">
-                                        ${product.price}
-                                    </Typography>
-                                </Box>
-                            </CardContent>
-                        </Card>
-                    ))}
+                        );
+                    })}
                 </Box>
             )}
 
-            <Button variant="outlined" sx={{ mt: 3, borderRadius: 20, px: 4 }}>
+            <Button variant="contained" sx={{ mt: 3, borderRadius: 20, px: 4, backgroundColor: "var(--button-color)" }}>
                 View All
             </Button>
         </Box>
