@@ -37,7 +37,6 @@ const calculateAverageRating = (reviews) => {
   const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
   return Number((totalRating / reviews.length).toFixed(1)); // Rounded to 1 decimal
 };
-syncSanityToPostgres();
 
 // Routes
 app.get("/products", async (req, res) => {
@@ -46,6 +45,7 @@ app.get("/products", async (req, res) => {
 
   try {
     const filters = {};
+    syncSanityToPostgres();
 
     // Filter by price range (price is a direct field in the table)
     if (minPrice || maxPrice) {
