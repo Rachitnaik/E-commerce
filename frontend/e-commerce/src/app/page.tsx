@@ -2,7 +2,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, Tooltip, MenuItem } from '@mui/material';
 import { Menu as MenuIcon, ShoppingCart, AccountCircle, Close } from "@mui/icons-material";
-import Landingpage from './components/Landing/landingpage';
+import Landingpage from './components/Landing/LandingPage';
 import './globals.css';
 import ProductListing from './components/ProductListing/productlisting';
 import LoginButton from './components/Login';
