@@ -59,19 +59,6 @@ const ResponsiveAppBar = () => {
   const handleMenuToggle = (setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>) =>
     (event: React.MouseEvent<HTMLElement>) => setter(prev => (prev ? null : event.currentTarget));
 
-  const reviews = [
-    { name: "Sarah M.", review: "I'm blown away by the quality and style of the clothes I received from Shop.co.", rating: 5 },
-    { name: "Alex K.", review: "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co.", rating: 5 },
-    { name: "James L.", review: "The selection of clothes is not only diverse but also on-point with the latest trends.", rating: 5 },
-    { name: "Sarah M.", review: "I'm blown away by the quality and style of the clothes I received from Shop.co.", rating: 2.5 },
-    { name: "Alex K.", review: "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co.", rating: 5 },
-    { name: "James L.", review: "The selection of clothes is not only diverse but also on-point with the latest trends.", rating: 5 },
-    { name: "Sarah M.", review: "I'm blown away by the quality and style of the clothes I received from Shop.co.", rating: 5 },
-    { name: "Alex K.", review: "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co.", rating: 5 },
-    { name: "James L.", review: "The selection of clothes is not only diverse but also on-point with the latest trends.", rating: 5 },
-  ];
-
-
 
   return (
     <>
@@ -136,7 +123,7 @@ const ResponsiveAppBar = () => {
         {loading ? <ProductListingSkeleton title="New Arrivals" /> : <ProductListing title="New Arrivals" products={newA} />}
         {loading ? <ProductListingSkeleton title="Top Selling" /> : <ProductListing title="Top Selling" products={sortedProducts} />}
         <Dress></Dress>
-        <CustomerReviews reviews={reviews} />
+        <CustomerReviews />
         <Footer />
       </ThemeProvider>
 
