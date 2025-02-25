@@ -4,11 +4,13 @@
   --landing-background: #f7f7f7;
   --button-color:black;
   --heading-color:black;
+ 
 }
 
 [data-theme="dark"] {
   --background-color: grey;
   --text-color: white;
+  --icon-color:white;
   --landing-background: black;
   --button-color:black;
   --heading-color:black;
