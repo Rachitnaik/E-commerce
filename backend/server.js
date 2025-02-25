@@ -164,8 +164,6 @@ app.get("/feedback", async (req, res) => {
         as: "user",
         attributes: ["user_id", "firstname", "lastname", "email_id"],
       },
-      raw: true,
-      nest: true,
     });
 
     if (feedback.length === 0) {
