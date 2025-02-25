@@ -156,18 +156,30 @@ app.get("/products/:product_id", async (req, res) => {
 //feedback api
 
 app.get("/feedback", async (req, res) => {
-  const feedback = await Feedback.findAll();
-  const count = feedback.length;
+  try {
+    const feedback = await Feedback.findAll({
+      attributes: ["feedback_id", "feedback_text", "rating", "feedback_date"],
+      include: {
+        model: User,
+        as: "user",
+        attributes: ["user_id", "firstname", "lastname", "email_id"],
+      },
+      raw: true,
+      nest: true,
+    });
 
-  if (!feedback) {
-    return res.status(404).json({ error: "No Feedbacks" });
+    if (feedback.length === 0) {
+      return res.status(404).json({ error: "No Feedbacks" });
+    }
+
+    res.json({
+      count: feedback.length,
+      feedback,
+    });
+  } catch (error) {
+    console.error("Error fetching feedback:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
-
-  // Return the product with its reviews
-  res.json({
-    count,
-    feedback,
-  });
 });
 
 // Start the server
