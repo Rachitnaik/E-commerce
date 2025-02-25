@@ -3,6 +3,7 @@ const Product = require("./Product");
 const User = require("./user");
 const Category = require("./Category");
 const ProductType = require("./ProductType");
+const Feedback = require("./feedback");
 
 Product.hasMany(Review, {
   foreignKey: "product_id",
@@ -39,5 +40,7 @@ ProductType.hasMany(Product, {
   foreignKey: "product_type_id",
   as: "products",
 });
+Feedback.belongsTo(User, { foreignKey: "user_id", as: "user" });
+User.hasMany(Feedback, { foreignKey: "user_id", as: "feedbacks" });
 
 module.exports = { Product, Review, User, ProductType, Category };
