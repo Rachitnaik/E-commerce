@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid2';
 import '../../globals.css';
 import Marquee from "react-fast-marquee";
 
-export default function FashionLanding() {
+export default function Landingpage() {
 
     return (
 

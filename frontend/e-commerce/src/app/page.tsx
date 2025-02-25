@@ -2,7 +2,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, Tooltip, MenuItem } from '@mui/material';
 import { Menu as MenuIcon, ShoppingCart, AccountCircle, Close } from "@mui/icons-material";
-import FashionLanding from './components/Landing/landingpage';
+import Landingpage from './components/Landing/landingpage';
 import './globals.css';
 import ProductListing from './components/ProductListing/productlisting';
 import LoginButton from './components/Login';
@@ -132,7 +132,7 @@ const ResponsiveAppBar = () => {
           </Container>
         </AppBar>
 
-        <FashionLanding />
+        <Landingpage />
         {loading ? <ProductListingSkeleton title="New Arrivals" /> : <ProductListing title="New Arrivals" products={newA} />}
         {loading ? <ProductListingSkeleton title="Top Selling" /> : <ProductListing title="Top Selling" products={sortedProducts} />}
         <Dress></Dress>
