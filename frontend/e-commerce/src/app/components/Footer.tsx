@@ -1,4 +1,6 @@
-import { Box, Container, Grid, Typography, TextField, Button, IconButton } from "@mui/material";
+import { Box, Container, Typography, TextField, Button, IconButton } from "@mui/material";
+import Grid from '@mui/material/Grid2';
+
 import { Facebook, Twitter, Instagram, Email, LightMode, DarkMode } from "@mui/icons-material";
 import { useTheme } from "../context/ThemeContext";
 
@@ -55,7 +57,7 @@ export default function Footer() {
             <Container sx={{ py: 4 }}>
                 <Grid container spacing={3}>
                     {/* Brand Info */}
-                    <Grid item xs={12} sm={3}>
+                    <Grid sx={{ xs: 12, sm: 3 }}>
                         <Typography variant="h6" fontWeight="bold">
                             SHOP.CO
                         </Typography>
@@ -63,13 +65,13 @@ export default function Footer() {
                             We have clothes that suit your style and which you’re proud to wear. From women to men.
                         </Typography>
                         <Box sx={{ mt: 1 }}>
-                            <IconButton>
+                            <IconButton sx={{ backgroundColor: "var(--icon-color)" }}>
                                 <Facebook />
                             </IconButton>
-                            <IconButton>
+                            <IconButton sx={{ backgroundColor: "var(--icon-color)" }}>
                                 <Twitter />
                             </IconButton>
-                            <IconButton>
+                            <IconButton sx={{ backgroundColor: "var(--icon-color)" }}>
                                 <Instagram />
                             </IconButton>
                         </Box>
@@ -82,7 +84,7 @@ export default function Footer() {
                         { title: "FAQ", links: ["Account", "Manage Deliveries", "Orders", "Payments"] },
                         { title: "RESOURCES", links: ["Free eBooks", "Development Tutorial", "How-to Blog", "YouTube Playlist"] },
                     ].map((section) => (
-                        <Grid item xs={6} sm={2} key={section.title}>
+                        <Grid sx={{ xs: 6, sm: 2 }} key={section.title}>
                             <Typography variant="subtitle1" fontWeight="bold">
                                 {section.title}
                             </Typography>
@@ -95,8 +97,8 @@ export default function Footer() {
                     ))}
 
                     {/* Toggle Theme Button */}
-                    <Grid item xs={12} sm={2} sx={{ textAlign: "center" }}>
-                        <IconButton onClick={toggleTheme} color="primary">
+                    <Grid sx={{ textAlign: "center", xs: 12, sm: 2 }}>
+                        <IconButton onClick={toggleTheme} sx={{ backgroundColor: "var(--icon-color)" }} >
                             {theme === "light" ? <DarkMode /> : <LightMode />}
                         </IconButton>
                         <Typography variant="body2">Toggle Theme</Typography>
