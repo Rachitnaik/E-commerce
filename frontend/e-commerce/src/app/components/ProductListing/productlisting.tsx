@@ -24,7 +24,7 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
     const displayedProducts = isMobile ? products : products.slice(0, 4);
 
     const handleProductClick = (productId: number) => {
-        router.push(`/product/${productId}`);
+        router.push(`/products/${productId}`);
     };
 
     return (
