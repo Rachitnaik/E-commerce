@@ -10,9 +10,10 @@ import axios from "axios";
 import { Product } from './utils/interfaces';
 import Dress from './components/Dress';
 import Footer from './components/Footer';
-import CustomerReviews from './components/cusstomerReviews';
+import CustomerReviews from './components/ReviewProduct/cusstomerReviews';
 import ProductListingSkeleton from './components/ProductListing/ProductListingSkeleton';
 import { ThemeProvider } from "../app/context/ThemeContext";
+import ProductSelected from './components/ProductSelected';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -124,6 +125,7 @@ const ResponsiveAppBar = () => {
         {loading ? <ProductListingSkeleton title="Top Selling" /> : <ProductListing title="Top Selling" products={sortedProducts} />}
         <Dress></Dress>
         <CustomerReviews />
+        {/* <ProductSelected />  for later*/}
         <Footer />
       </ThemeProvider>
 
