@@ -11,8 +11,6 @@ interface ProductListingProps {
 
 const ProductListingSkeleton = ({ title }: ProductListingProps) => {
     const isMobile = useMediaQuery("(max-width: 768px)");
-    const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1024px)");
-    const isDesktop = useMediaQuery("(min-width: 1025px)");
 
     const skeletonCount = isMobile ? 4 : 4; // Adjust count for different screen sizes
 

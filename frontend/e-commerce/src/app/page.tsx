@@ -8,12 +8,13 @@ import ProductListing from './components/ProductListing/productlisting';
 import LoginButton from './components/Login';
 import axios from "axios";
 import { Product } from './utils/interfaces';
-import Dress from './components/Dress';
+import BrowseStyle from './components/BrowseStyle';
 import Footer from './components/Footer';
-import CustomerReviews from './components/ReviewProduct/cusstomerReviews';
+import CustomerFeedback from './components/ReviewProduct/cusstomerFeedback';
 import ProductListingSkeleton from './components/ProductListing/ProductListingSkeleton';
 import { ThemeProvider } from "../app/context/ThemeContext";
 import ProductSelected from './components/ProductSelected';
+import ProductReviews from './components/ReviewProduct/ProductReviews';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -123,9 +124,9 @@ const ResponsiveAppBar = () => {
         <Landingpage />
         {loading ? <ProductListingSkeleton title="New Arrivals" /> : <ProductListing title="New Arrivals" products={newA} />}
         {loading ? <ProductListingSkeleton title="Top Selling" /> : <ProductListing title="Top Selling" products={sortedProducts} />}
-        <Dress></Dress>
-        <CustomerReviews />
-        {/* <ProductSelected />  for later*/}
+        <BrowseStyle />
+        <CustomerFeedback />
+        {/* <ProductReviews /> */}
         <Footer />
       </ThemeProvider>
 

@@ -1,11 +1,12 @@
 "use client";
 import { FC, useEffect, useState } from "react";
-import { Box, Typography, Card, CardContent, Rating, IconButton, CircularProgress } from "@mui/material";
+import { Box, Typography, IconButton, CircularProgress } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
-import { ArrowBackIos, ArrowForwardIos, Verified } from "@mui/icons-material";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import ReviewCard from "./ReviewCard"; // Import reusable component
 
 interface Review {
     name: string;
@@ -13,16 +14,16 @@ interface Review {
     rating: number;
 }
 
-const CustomerReviews: FC = () => {
+const CustomerFeedback: FC = () => {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchReviews = async () => {
+        const fetchFeedback = async () => {
             try {
                 const response = await fetch("https://e-commerce-b2tt.onrender.com/feedback");
-                if (!response.ok) throw new Error("Failed to fetch reviews");
+                if (!response.ok) throw new Error("Failed to fetch feedback");
 
                 const data = await response.json();
                 if (data.feedback && Array.isArray(data.feedback)) {
@@ -34,13 +35,13 @@ const CustomerReviews: FC = () => {
                     setReviews(formattedReviews);
                 }
             } catch (err) {
-                setError("Error loading reviews. Please try again.");
+                setError("Error loading Feedbacks. Please try again.");
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchReviews();
+        fetchFeedback();
     }, []);
 
     return (
@@ -79,15 +80,7 @@ const CustomerReviews: FC = () => {
                 >
                     {reviews.map((review, index) => (
                         <SwiperSlide key={index}>
-                            <Card sx={{ p: 3, borderRadius: 3, boxShadow: "0px 5px 15px rgba(0,0,0,0.1)", textAlign: "left" }}>
-                                <Rating value={review.rating} readOnly precision={0.5} sx={{ mb: 1 }} />
-                                <Typography fontWeight="bold">
-                                    {review.name}
-                                </Typography>
-                                <Typography variant="body2" mt={1} color="text.secondary">
-                                    "{review.review}"
-                                </Typography>
-                            </Card>
+                            <ReviewCard review={review} />
                         </SwiperSlide>
                     ))}
                 </Swiper>
@@ -96,4 +89,4 @@ const CustomerReviews: FC = () => {
     );
 };
 
-export default CustomerReviews;
+export default CustomerFeedback;

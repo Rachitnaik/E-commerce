@@ -9,7 +9,7 @@ const dressStyles = [
     { title: "Gym", image: "/gym.png" },
 ];
 
-export default function HomePage() {
+export default function BrowseStyle() {
     return (
         <Box sx={{ backgroundColor: "var(--landing-background)", py: 4, borderRadius: 3, mx: "auto", maxWidth: 1000 }}>
             <Container>

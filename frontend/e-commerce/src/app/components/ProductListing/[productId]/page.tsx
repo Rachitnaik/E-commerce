@@ -1,15 +1,21 @@
+"use client";
+
+import { useState } from "react";
+import { useParams } from "next/navigation";
 import { Box, Button, Typography, IconButton, Rating, Chip } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import Image from "next/image";
-import { useState } from "react";
-import ProductReviews from "./ReviewProduct/ProductReviews";
 
-const ProductPage = () => {
+const ProductSelected = () => {
+    const { id } = useParams(); // Get product ID from URL
+
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState("Large");
     const [selectedColor, setSelectedColor] = useState("#4A4A32");
 
+    // Mock product data (Replace this with an API call)
     const product = {
+        id,
         name: "ONE LIFE GRAPHIC T-SHIRT",
         price: 260,
         oldPrice: 300,
@@ -91,9 +97,8 @@ const ProductPage = () => {
                     <Button variant="contained" size="large">Add to Cart</Button>
                 </Box>
             </Box>
-
         </Box>
     );
 };
 
-export default ProductPage;
+export default ProductSelected;

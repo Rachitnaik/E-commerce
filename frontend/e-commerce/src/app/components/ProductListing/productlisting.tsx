@@ -1,5 +1,6 @@
 "use client";
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Box, Typography, Button, Card, CardContent, Rating, useMediaQuery } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -8,19 +9,23 @@ import { Autoplay, Pagination } from "swiper/modules";
 import { Product } from "../../utils/interfaces"
 import '../../globals.css';
 
-
 interface ProductListingProps {
     title: string;
     products: Product[];
 }
 
 const ProductListing = ({ title, products }: ProductListingProps) => {
+    const router = useRouter();
     const isMobile = useMediaQuery("(max-width: 768px)");
     const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1024px)");
     const isDesktop = useMediaQuery("(min-width: 1025px)");
 
     // Limit the number of products for tablet and desktop screens to 4
     const displayedProducts = isMobile ? products : products.slice(0, 4);
+
+    const handleProductClick = (productId: number) => {
+        router.push(`/product/${productId}`);
+    };
 
     return (
         <Box textAlign="center" py={4}>
@@ -41,7 +46,7 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
                         const imageUrl = product.features?.find((feature) => feature.isDefault)?.image || '/file.svg';
 
                         return (
-                            <SwiperSlide key={product.product_id}>
+                            <SwiperSlide key={product.product_id} onClick={() => handleProductClick(product.product_id)}>
                                 <Card
                                     sx={{
                                         maxWidth: 200,
@@ -50,6 +55,7 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
                                         boxShadow: "none",
                                         backgroundColor: "var(--landing-background)",
                                         margin: "0 auto",
+                                        cursor: "pointer",
                                     }}
                                 >
                                     <Image
@@ -89,7 +95,9 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
                                     borderRadius: 3,
                                     boxShadow: "none",
                                     backgroundColor: "var(--landing-background)",
+                                    cursor: "pointer",
                                 }}
+                                onClick={() => handleProductClick(product.product_id)}
                             >
                                 <Image
                                     src={imageUrl}
