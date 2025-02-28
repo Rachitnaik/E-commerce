@@ -4,8 +4,7 @@ import ProductDetails from "../../components/ProductListing/ProductDetails";
 type Params = Promise<{ productId: string }>;
 
 const ProductPage = async ({ params }: { params: Params }) => {
-    const resolvedParams = await params; // Await the params
-    const { productId } = resolvedParams;
+    const productId = await params; // Await the params
 
     try {
         const response = await fetch(`https://e-commerce-b2tt.onrender.com/products/${productId}`, {
