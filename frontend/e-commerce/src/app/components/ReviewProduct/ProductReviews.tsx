@@ -86,7 +86,7 @@ const ProductReviews = () => {
     };
 
     return (
-        <Box sx={{ maxWidth: 800, margin: "auto", padding: 2 }}>
+        <Box sx={{ margin: "auto", padding: 2 }}>
             <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
                 All Reviews ({reviews.length})
             </Typography>

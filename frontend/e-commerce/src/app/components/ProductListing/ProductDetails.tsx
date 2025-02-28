@@ -1,95 +1,169 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Button, Typography, IconButton, Rating } from "@mui/material";
+import { Grid, Button, Typography, IconButton, Rating } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import Image from "next/image";
+import ProductReviews from "../ReviewProduct/ProductReviews";
 
-const ProductDetails = ({ product }: { product: any }) => {
-    const [quantity, setQuantity] = useState(1);
-    const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || "");
-    const [selectedColor, setSelectedColor] = useState(product.features?.[0]?.color || "");
-    const [selectedImage, setSelectedImage] = useState(
-        product.features?.find((f: any) => f.isDefault)?.image || product.features?.[0]?.image || "/placeholder.png"
+import Grid2 from "@mui/material/Grid2";
+// import Layout from "../layout";
+import Footer from "../Footer";
+
+type ProductFeature = {
+    _key: string;
+    color: string;
+    image: string;
+    isDefault?: boolean;
+};
+
+type Product = {
+    product_name: string;
+    averageRating: number;
+    reviewCount: number;
+    price: number;
+    originalPrice?: number;
+    discountPercentage?: number;
+    description: string;
+    sizes?: string[];
+    features?: ProductFeature[];
+};
+
+interface ProductDetailsProps {
+    product: Product;
+}
+
+const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
+    const [quantity, setQuantity] = useState<number>(1);
+    const [selectedSize, setSelectedSize] = useState<string>(product.sizes?.[0] || "");
+    const [selectedColor, setSelectedColor] = useState<string>(product.features?.[0]?.color || "");
+    const [selectedImage, setSelectedImage] = useState<string>(
+        product.features?.find((f) => f.isDefault)?.image || product.features?.[0]?.image || "/placeholder.png"
     );
 
     return (
-        <Box maxWidth={1200} mx="auto" p={3} display="flex" flexDirection={{ xs: "column", md: "row" }}>
-            {/* Left: Images */}
-            <Box flex={1} display="flex" flexDirection={{ xs: "column", md: "row" }}>
-                <Box display="flex" flexDirection={{ xs: "row", md: "column" }} gap={1}>
-                    {product.features.map((feature: any) => (
+        <>
+            {/* <Layout /> */}
+            <Grid2 container maxWidth={1200} mx="auto" p={3} spacing={4}>
+                {/* Left: Image Section */}
+                <Grid2 size={{ xs: 12, md: 6 }} display="flex" gap={2}>
+                    {/* Thumbnail Images */}
+                    {/* <Grid2 display="flex" flexDirection={{ xs: "row", md: "column" }} gap={2}>
+                    {product.features?.map((feature) => (
                         <Image
                             key={feature._key}
                             src={feature.image}
-                            alt="Product"
+                            alt="Thumbnail"
                             width={60}
                             height={60}
-                            style={{ borderRadius: 8, cursor: "pointer", border: selectedImage === feature.image ? "2px solid black" : "none" }}
+                            style={{
+                                borderRadius: 8,
+                                cursor: "pointer",
+                                border: selectedImage === feature.image ? "2px solid black" : "1px solid transparent",
+                            }}
                             onClick={() => setSelectedImage(feature.image)}
                         />
                     ))}
-                </Box>
-                <Box mx={{ xs: 0, md: 2 }}>
-                    <Image src={selectedImage} alt="Main Product" width={400} height={400} style={{ borderRadius: 10 }} />
-                </Box>
-            </Box>
+                </Grid2> */}
 
-            {/* Right: Details */}
-            <Box flex={1} px={{ xs: 0, md: 4 }}>
-                <Typography variant="h5" fontWeight={700}>{product.product_name}</Typography>
-                <Box display="flex" alignItems="center" gap={1} mt={1}>
-                    <Rating value={product.averageRating} readOnly precision={0.5} />
-                    <Typography variant="body2">{product.averageRating}/5 ({product.reviewCount} Reviews)</Typography>
-                </Box>
-                <Typography variant="h6" fontWeight={700} mt={2}>${product.price}</Typography>
-                <Typography variant="body2" mt={2} color="text.secondary">{product.description}</Typography>
+                    {/* Main Product Image */}
+                    <Grid2 mx={{ xs: 0, md: 2 }}>
+                        <Image src={selectedImage} alt="Product" width={360} height={350} style={{ borderRadius: 10 }} />
+                    </Grid2>
+                </Grid2>
 
-                {/* Color Selection */}
-                <Typography mt={3} fontWeight={600}>Select Color</Typography>
-                <Box display="flex" gap={1} mt={1}>
-                    {product.features?.map((feature: any) => (
-                        <Box
-                            key={feature.color}
-                            width={24}
-                            height={24}
-                            borderRadius="50%"
-                            bgcolor={feature.color}
-                            border={selectedColor === feature.color ? "2px solid black" : "1px solid grey"}
-                            onClick={() => {
-                                setSelectedColor(feature.color);
-                                setSelectedImage(feature.image);
-                            }}
-                            sx={{ cursor: "pointer" }}
-                        />
-                    ))}
-                </Box>
+                {/* Right: Product Details */}
+                <Grid2 size={{ xs: 12, md: 6 }} px={{ xs: 0, md: 4 }}>
+                    <Typography variant="h5" fontWeight={800} sx={{ textTransform: "uppercase" }}>
+                        {product.product_name}
+                    </Typography>
 
-                {/* Size Selection */}
-                <Typography mt={3} fontWeight={600}>Choose Size</Typography>
-                <Box display="flex" gap={1} mt={1}>
-                    {product.sizes?.map((size: string) => (
+                    <Grid2 display="flex" alignItems="center" gap={1} mt={1}>
+                        <Rating value={product.averageRating} readOnly precision={0.5} />
+                        <Typography variant="body2">{product.averageRating}/5 ({product.reviewCount} Reviews)</Typography>
+                    </Grid2>
+
+                    <Grid2 display="flex" alignItems="center" gap={2} mt={2}>
+                        <Typography variant="h6" fontWeight={800}>${product.price}</Typography>
+                        {product.originalPrice && (
+                            <Typography variant="body1" sx={{ textDecoration: "line-through", color: "gray" }}>
+                                ${product.originalPrice}
+                            </Typography>
+                        )}
+                        {product.discountPercentage && (
+                            <Typography variant="body2" sx={{ color: "red", fontWeight: 600 }}>
+                                -{product.discountPercentage}%
+                            </Typography>
+                        )}
+                    </Grid2>
+
+                    <Typography variant="body2" mt={2} color="text.secondary">
+                        {product.description}
+                    </Typography>
+
+                    {product.features && product.features.length > 0 && (
+                        <>
+                            <Typography mt={3} fontWeight={600}>Select Colors</Typography>
+                            <Grid2 display="flex" gap={1} mt={1}>
+                                {product.features.map((feature) => (
+                                    <Grid2
+                                        key={feature.color}
+                                        width={24}
+                                        height={24}
+                                        borderRadius="50%"
+                                        bgcolor={feature.color}
+                                        border={selectedColor === feature.color ? "2px solid black" : "1px solid grey"}
+                                        onClick={() => {
+                                            setSelectedColor(feature.color);
+                                            setSelectedImage(feature.image);
+                                        }}
+                                        sx={{ cursor: "pointer" }}
+                                    />
+                                ))}
+                            </Grid2>
+                        </>
+                    )}
+
+                    {product.sizes && product.sizes.length > 0 && (
+                        <>
+                            <Typography mt={3} fontWeight={600}>Choose Size</Typography>
+                            <Grid2 display="flex" gap={1} mt={1}>
+                                {product.sizes.map((size) => (
+                                    <Button
+                                        key={size}
+                                        variant={selectedSize === size ? "contained" : "outlined"}
+                                        sx={{ borderRadius: "20px", textTransform: "none", padding: "6px 16px", minWidth: "60px" }}
+                                        onClick={() => setSelectedSize(size)}
+                                    >
+                                        {size}
+                                    </Button>
+                                ))}
+                            </Grid2>
+                        </>
+                    )}
+
+                    <Grid2 display="flex" alignItems="center" gap={2} mt={4}>
+                        <Grid2 display="flex" alignItems="center" border="1px solid grey" borderRadius={5} p={1}>
+                            <IconButton onClick={() => setQuantity(Math.max(1, quantity - 1))}><Remove /></IconButton>
+                            <Typography px={2}>{quantity}</Typography>
+                            <IconButton onClick={() => setQuantity(quantity + 1)}><Add /></IconButton>
+                        </Grid2>
+
                         <Button
-                            key={size}
-                            variant={selectedSize === size ? "contained" : "outlined"}
-                            onClick={() => setSelectedSize(size)}
+                            variant="contained"
+                            size="large"
+                            sx={{ backgroundColor: "black", color: "white", padding: "10px 24px", borderRadius: "30px", "&:hover": { backgroundColor: "#333" } }}
                         >
-                            {size}
+                            Add to Cart
                         </Button>
-                    ))}
-                </Box>
-
-                {/* Quantity and Cart Button */}
-                <Box display="flex" alignItems="center" gap={2} mt={4}>
-                    <Box display="flex" alignItems="center" border="1px solid grey" borderRadius={5} p={1}>
-                        <IconButton onClick={() => setQuantity(Math.max(1, quantity - 1))}><Remove /></IconButton>
-                        <Typography px={2}>{quantity}</Typography>
-                        <IconButton onClick={() => setQuantity(quantity + 1)}><Add /></IconButton>
-                    </Box>
-                    <Button variant="contained" size="large">Add to Cart</Button>
-                </Box>
-            </Box>
-        </Box>
+                    </Grid2>
+                </Grid2>
+                <Grid2 size={12} mt={6}>
+                    <ProductReviews />
+                </Grid2>
+            </Grid2>
+            <Footer />
+        </>
     );
 };
 

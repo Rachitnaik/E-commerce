@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
-import ProductDetails from "../ProductDetails";
+import ProductDetails from "../../components/ProductListing/ProductDetails";
+
+
 
 interface Props {
     params: { productId: string };
 }
-
 const ProductPage = async ({ params }: Props) => {
     const { productId } = params;
 

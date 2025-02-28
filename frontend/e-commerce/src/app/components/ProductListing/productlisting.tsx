@@ -22,11 +22,6 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
 
     // Limit the number of products for tablet and desktop screens to 4
     const displayedProducts = isMobile ? products : products.slice(0, 4);
-
-    const handleProductClick = (productId: number) => {
-        router.push(`/products/${productId}`);
-    };
-
     return (
         <Box textAlign="center" py={4}>
             <Typography variant="h4" fontWeight="bold" mb={3} sx={{ color: "var(--text-color)" }}>
@@ -46,7 +41,7 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
                         const imageUrl = product.features?.find((feature) => feature.isDefault)?.image || '/file.svg';
 
                         return (
-                            <SwiperSlide key={product.product_id} onClick={() => handleProductClick(product.product_id)}>
+                            <SwiperSlide key={product.product_id} >
                                 <Card
                                     sx={{
                                         maxWidth: 200,
@@ -57,6 +52,7 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
                                         margin: "0 auto",
                                         cursor: "pointer",
                                     }}
+                                    onClick={() => router.push(`/product/${product.product_id}`)}
                                 >
                                     <Image
                                         src={imageUrl}
@@ -97,7 +93,7 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
                                     backgroundColor: "var(--landing-background)",
                                     cursor: "pointer",
                                 }}
-                                onClick={() => handleProductClick(product.product_id)}
+                                onClick={() => router.push(`/product/${product.product_id}`)}
                             >
                                 <Image
                                     src={imageUrl}
