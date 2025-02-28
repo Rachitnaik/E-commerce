@@ -6,7 +6,7 @@ interface ReviewCardProps {
         name: string;
         review: string;
         rating: number;
-        date?: string; // Optional for product reviews
+        date?: Date; // Optional for product reviews
     };
 }
 

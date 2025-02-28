@@ -9,6 +9,7 @@ import ProductReviews from "../ReviewProduct/ProductReviews";
 import Grid2 from "@mui/material/Grid2";
 // import Layout from "../layout";
 import Footer from "../Footer";
+import NavBar from "../Navbar";
 
 type ProductFeature = {
     _key: string;
@@ -19,11 +20,10 @@ type ProductFeature = {
 
 type Product = {
     product_name: string;
-    averageRating: number;
-    reviewCount: number;
+    reviews: []
     price: number;
-    originalPrice?: number;
-    discountPercentage?: number;
+    // originalPrice?: number;
+    // discountPercentage?: number;
     description: string;
     sizes?: string[];
     features?: ProductFeature[];
@@ -31,9 +31,11 @@ type Product = {
 
 interface ProductDetailsProps {
     product: Product;
+    averageRating: number;
+    reviewCount: number;
 }
 
-const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
+const ProductDetails: React.FC<ProductDetailsProps> = ({ product, averageRating, reviewCount }) => {
     const [quantity, setQuantity] = useState<number>(1);
     const [selectedSize, setSelectedSize] = useState<string>(product.sizes?.[0] || "");
     const [selectedColor, setSelectedColor] = useState<string>(product.features?.[0]?.color || "");
@@ -41,30 +43,32 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         product.features?.find((f) => f.isDefault)?.image || product.features?.[0]?.image || "/placeholder.png"
     );
 
+
+    console.log("products prices", product)
     return (
         <>
-            {/* <Layout /> */}
+            <NavBar />
             <Grid2 container maxWidth={1200} mx="auto" p={3} spacing={4}>
                 {/* Left: Image Section */}
                 <Grid2 size={{ xs: 12, md: 6 }} display="flex" gap={2}>
                     {/* Thumbnail Images */}
-                    {/* <Grid2 display="flex" flexDirection={{ xs: "row", md: "column" }} gap={2}>
-                    {product.features?.map((feature) => (
-                        <Image
-                            key={feature._key}
-                            src={feature.image}
-                            alt="Thumbnail"
-                            width={60}
-                            height={60}
-                            style={{
-                                borderRadius: 8,
-                                cursor: "pointer",
-                                border: selectedImage === feature.image ? "2px solid black" : "1px solid transparent",
-                            }}
-                            onClick={() => setSelectedImage(feature.image)}
-                        />
-                    ))}
-                </Grid2> */}
+                    <Grid2 display="flex" flexDirection={{ xs: "row", md: "column" }} gap={2}>
+                        {product.features?.map((feature) => (
+                            <Image
+                                key={feature._key}
+                                src={feature.image}
+                                alt="Thumbnail"
+                                width={60}
+                                height={60}
+                                style={{
+                                    borderRadius: 8,
+                                    cursor: "pointer",
+                                    border: selectedImage === feature.image ? "2px solid black" : "1px solid transparent",
+                                }}
+                                onClick={() => setSelectedImage(feature.image)}
+                            />
+                        ))}
+                    </Grid2>
 
                     {/* Main Product Image */}
                     <Grid2 mx={{ xs: 0, md: 2 }}>
@@ -79,13 +83,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                     </Typography>
 
                     <Grid2 display="flex" alignItems="center" gap={1} mt={1}>
-                        <Rating value={product.averageRating} readOnly precision={0.5} />
-                        <Typography variant="body2">{product.averageRating}/5 ({product.reviewCount} Reviews)</Typography>
+                        <Rating value={averageRating} readOnly precision={0.5} />
+                        <Typography variant="body2">{averageRating}/5 ({reviewCount} Reviews)</Typography>
                     </Grid2>
 
                     <Grid2 display="flex" alignItems="center" gap={2} mt={2}>
                         <Typography variant="h6" fontWeight={800}>${product.price}</Typography>
-                        {product.originalPrice && (
+                        {/* {product.originalPrice && (
                             <Typography variant="body1" sx={{ textDecoration: "line-through", color: "gray" }}>
                                 ${product.originalPrice}
                             </Typography>
@@ -94,7 +98,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                             <Typography variant="body2" sx={{ color: "red", fontWeight: 600 }}>
                                 -{product.discountPercentage}%
                             </Typography>
-                        )}
+                        )} */}
                     </Grid2>
 
                     <Typography variant="body2" mt={2} color="text.secondary">
@@ -159,7 +163,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                     </Grid2>
                 </Grid2>
                 <Grid2 size={12} mt={6}>
-                    <ProductReviews />
+                    <ProductReviews reviews={product?.reviews} />
                 </Grid2>
             </Grid2>
             <Footer />

@@ -14,16 +14,21 @@ const ProductPage = async ({ params }: Props) => {
             cache: "no-store",
         });
 
+
+        console.log("response", response)
+
         if (!response.ok) {
             console.log("not found")
             return notFound();
         }
 
         const data = await response.json();
+        console.log("response dAT", data)
 
         if (!data?.product) return notFound(); // Ensure product exists
 
-        return <ProductDetails product={data.product} />;
+        return <ProductDetails product={data.product} averageRating={data.averageRating}
+            reviewCount={data.reviewCount} />;
     } catch (error) {
         console.error("Failed to fetch product:", error);
         return notFound();
