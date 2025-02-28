@@ -1,11 +1,16 @@
 import { notFound } from "next/navigation";
 import ProductDetails from "../../components/ProductListing/ProductDetails";
 
+
+
 interface Props {
     params: { productId: string };
 }
-
-const ProductPage = async ({ params }: { params: { productId: string } }) => {
+const ProductPage = async ({ params }: {
+    params: {
+        productId: string
+    }
+}) => {
     const { productId } = params;
 
     try {
@@ -13,8 +18,10 @@ const ProductPage = async ({ params }: { params: { productId: string } }) => {
             cache: "no-store",
         });
 
+
+
         if (!response.ok) {
-            console.log("Product not found");
+            console.log("not found")
             return notFound();
         }
 
