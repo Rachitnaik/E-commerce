@@ -8,14 +8,19 @@ import { Navigation } from "swiper/modules";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import ReviewCard from "./ReviewCard"; // Import reusable component
 
-interface Review {
-    name: string;
-    review: string;
+interface CustomerFeedback {
+    feedback_id: string;
+    feedback_text: string;
     rating: number;
+    feedback_date: string;
+    user: {
+        firstname: string;
+        lastname: string;
+    };
 }
 
 const CustomerFeedback: FC = () => {
-    const [reviews, setReviews] = useState<Review[]>([]);
+    const [feedbacks, setFeedbacks] = useState<CustomerFeedback[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -27,12 +32,7 @@ const CustomerFeedback: FC = () => {
 
                 const data = await response.json();
                 if (data.feedback && Array.isArray(data.feedback)) {
-                    const formattedReviews = data.feedback.map((item: any) => ({
-                        name: `${item.user.firstname} ${item.user.lastname}`,
-                        review: item.feedback_text,
-                        rating: item.rating,
-                    }));
-                    setReviews(formattedReviews);
+                    setFeedbacks(data.feedback);
                 }
             } catch (err) {
                 setError("Error loading Feedbacks. Please try again.");
@@ -78,9 +78,16 @@ const CustomerFeedback: FC = () => {
                     }}
                     style={{ paddingBottom: "30px" }}
                 >
-                    {reviews.map((review, index) => (
-                        <SwiperSlide key={index}>
-                            <ReviewCard review={review} />
+                    {feedbacks.map((feedback) => (
+                        <SwiperSlide key={feedback.feedback_id}>
+                            <ReviewCard
+                                review={{
+                                    name: `${feedback.user.firstname} ${feedback.user.lastname}`,
+                                    review: feedback.feedback_text,
+                                    rating: feedback.rating,
+
+                                }}
+                            />
                         </SwiperSlide>
                     ))}
                 </Swiper>
