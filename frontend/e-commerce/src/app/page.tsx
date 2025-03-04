@@ -1,10 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, Tooltip, MenuItem } from '@mui/material';
-import { Menu as MenuIcon, ShoppingCart, AccountCircle, Close } from "@mui/icons-material";
 
 import './globals.css';
-import LoginButton from './components/Login';
 import axios from "axios";
 import { Product } from './utils/interfaces';
 
