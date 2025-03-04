@@ -7,6 +7,7 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import ReviewCard from "./ReviewCard"; // Import reusable component
+import CustomerFeedbackSkeleton from "../skeletons/customerFeedbackSkeleton";
 
 interface CustomerFeedback {
     feedback_id: string;
@@ -63,7 +64,7 @@ const CustomerFeedback: FC = () => {
 
             {/* Show Loader or Error Message */}
             {loading ? (
-                <CircularProgress />
+                <CustomerFeedbackSkeleton />
             ) : error ? (
                 <Typography color="error">{error}</Typography>
             ) : (

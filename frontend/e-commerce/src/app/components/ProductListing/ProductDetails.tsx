@@ -14,6 +14,7 @@ import NavBar from "../Navbar";
 type ProductFeature = {
     _key: string;
     color: string;
+    size: string;
     image: string;
     isDefault?: boolean;
 };
@@ -25,7 +26,6 @@ type Product = {
     // originalPrice?: number;
     // discountPercentage?: number;
     description: string;
-    sizes?: string[];
     features?: ProductFeature[];
 };
 
@@ -37,14 +37,14 @@ interface ProductDetailsProps {
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product, averageRating, reviewCount }) => {
     const [quantity, setQuantity] = useState<number>(1);
-    const [selectedSize, setSelectedSize] = useState<string>(product.sizes?.[0] || "");
+    const [selectedSize, setSelectedSize] = useState<string>(product.features?.[0]?.size || "");
     const [selectedColor, setSelectedColor] = useState<string>(product.features?.[0]?.color || "");
     const [selectedImage, setSelectedImage] = useState<string>(
         product.features?.find((f) => f.isDefault)?.image || product.features?.[0]?.image || "/placeholder.png"
     );
 
 
-    console.log("products prices", product)
+    console.log("products size", product)
     return (
         <>
             <NavBar />
@@ -128,18 +128,29 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, averageRating,
                         </>
                     )}
 
-                    {product.sizes && product.sizes.length > 0 && (
+                    {product.features && product.features.length > 0 && (
                         <>
                             <Typography mt={3} fontWeight={600}>Choose Size</Typography>
                             <Grid2 display="flex" gap={1} mt={1}>
-                                {product.sizes.map((size) => (
+                                {product.features.map((feature) => (
                                     <Button
-                                        key={size}
-                                        variant={selectedSize === size ? "contained" : "outlined"}
-                                        sx={{ borderRadius: "20px", textTransform: "none", padding: "6px 16px", minWidth: "60px" }}
-                                        onClick={() => setSelectedSize(size)}
+                                        key={feature._key}
+                                        variant={selectedSize === feature.size ? "contained" : "outlined"}
+                                        sx={{
+                                            borderRadius: "20px",
+                                            textTransform: "none",
+                                            padding: "6px 16px",
+                                            minWidth: "60px",
+                                            backgroundColor: selectedSize === feature.size ? "black" : "transparent",
+                                            color: selectedSize === feature.size ? "white" : "black",
+                                            borderColor: selectedSize === feature.size ? "black" : "gray",
+                                            "&:hover": {
+                                                backgroundColor: selectedSize === feature.size ? "#333" : "rgba(0, 0, 0, 0.1)",
+                                            },
+                                        }}
+                                        onClick={() => setSelectedSize(feature.size)}
                                     >
-                                        {size}
+                                        {feature.size}
                                     </Button>
                                 ))}
                             </Grid2>

@@ -67,8 +67,6 @@ const ProductListingSkeleton = ({ title }: ProductListingProps) => {
                     ))}
                 </Box>
             )}
-
-            <Skeleton variant="rectangular" width={150} height={40} sx={{ borderRadius: 20, mt: 3 }} />
         </Box>
     );
 };

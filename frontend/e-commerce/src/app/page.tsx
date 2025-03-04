@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 
 import { ThemeProvider } from "../app/context/ThemeContext";
 import Landingpage from './components/landing/landingpage';
-import ProductListingSkeleton from './components/ProductListing/ProductListingSkeleton';
+import ProductListingSkeleton from './components/skeletons/ProductListingSkeleton';
 import ProductListing from './components/ProductListing/productlisting';
 import BrowseStyle from './components/BrowseStyle';
 import CustomerFeedback from './components/ReviewProduct/cusstomerFeedback';

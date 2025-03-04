@@ -4,14 +4,12 @@ import ProductDetails from "../../components/ProductListing/ProductDetails";
 type Params = Promise<{ productId: string }>;
 
 const ProductPage = async ({ params }: { params: Params }) => {
-    const productId = await params; // Await the params
+    const { productId } = await params;
+    console.log("productId", productId)
 
     try {
-        const response = await fetch(`https://e-commerce-b2tt.onrender.com/products/${productId}`, {
-            cache: "no-store",
-        });
-
-        console.log("response", response);
+        const url = `https://e-commerce-b2tt.onrender.com/products/${productId}`;
+        const response = await fetch(url, { cache: "no-store" });
 
         if (!response.ok) {
             console.log("not found");
@@ -21,7 +19,7 @@ const ProductPage = async ({ params }: { params: Params }) => {
         const data = await response.json();
         console.log("response data", data);
 
-        if (!data?.product) return notFound(); // Ensure product exists
+        if (!data?.product) return notFound();
 
         return <ProductDetails product={data.product} averageRating={data.averageRating} reviewCount={data.reviewCount} />;
     } catch (error) {
