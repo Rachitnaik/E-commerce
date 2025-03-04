@@ -14,27 +14,12 @@ import ProductListing from './components/ProductListing/productlisting';
 import BrowseStyle from './components/BrowseStyle';
 import CustomerFeedback from './components/ReviewProduct/cusstomerFeedback';
 import NavBar from './components/Navbar';
+import useProducts from './customHooks/useProduct';
 
 
 const ResponsiveAppBar = () => {
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("https://e-commerce-b2tt.onrender.com/products");
-        setProducts(response.data.products);
-
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, []);
+  const { products, loading } = useProducts();
 
 
   const newA: Product[] = [...products].sort((x, y) => new Date(y.date).getTime() - new Date(x.date).getTime());

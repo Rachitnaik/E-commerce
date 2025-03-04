@@ -17,8 +17,6 @@ const ProductPage = async ({ params }: { params: Params }) => {
         }
 
         const data = await response.json();
-        console.log("response data", data);
-
         if (!data?.product) return notFound();
 
         return <ProductDetails product={data.product} averageRating={data.averageRating} reviewCount={data.reviewCount} />;

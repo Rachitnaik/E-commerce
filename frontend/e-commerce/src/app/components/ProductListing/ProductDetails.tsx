@@ -10,27 +10,12 @@ import Grid2 from "@mui/material/Grid2";
 // import Layout from "../layout";
 import Footer from "../Footer";
 import NavBar from "../Navbar";
+import { Productdetails } from "@/app/utils/interfaces";
 
-type ProductFeature = {
-    _key: string;
-    color: string;
-    size: string;
-    image: string;
-    isDefault?: boolean;
-};
 
-type Product = {
-    product_name: string;
-    reviews: []
-    price: number;
-    // originalPrice?: number;
-    // discountPercentage?: number;
-    description: string;
-    features?: ProductFeature[];
-};
 
 interface ProductDetailsProps {
-    product: Product;
+    product: Productdetails;
     averageRating: number;
     reviewCount: number;
 }
@@ -43,8 +28,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, averageRating,
         product.features?.find((f) => f.isDefault)?.image || product.features?.[0]?.image || "/placeholder.png"
     );
 
-
-    console.log("products size", product)
     return (
         <>
             <NavBar />

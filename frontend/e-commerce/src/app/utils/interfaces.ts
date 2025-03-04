@@ -14,8 +14,37 @@ export interface Feature {
     features: Feature[];
     date: string;
   }
-  
 
+
+  export type ProductFeature = {
+    _key: string;
+    color: string;
+    size: string;
+    image: string;
+    isDefault?: boolean;
+};
+
+export type Productdetails = {
+    product_name: string;
+    reviews: []
+    price: number;
+    // originalPrice?: number;
+    // discountPercentage?: number;
+    description: string;
+    features?: ProductFeature[];
+};
+
+
+export interface ProductReview {
+  review_id: string;
+  review_text: string;
+  review_date: Date;
+  rating: number;
+  user: {
+      firstname: string;
+      lastname: string;
+  };
+}
 
   export const fetchProduct = async (id: string) => {
     try {

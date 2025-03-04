@@ -1,13 +1,14 @@
 "use client";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Box, Typography, Button, Card, CardContent, Rating, useMediaQuery } from "@mui/material";
+import { Box, Typography, Button, Card, CardContent, Rating, useMediaQuery, Backdrop, CircularProgress } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Product } from "../../utils/interfaces"
 import '../../globals.css';
+import { useState } from 'react';
 
 interface ProductListingProps {
     title: string;
@@ -19,6 +20,12 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
     const isMobile = useMediaQuery("(max-width: 768px)");
     const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1024px)");
     const isDesktop = useMediaQuery("(min-width: 1025px)");
+
+    const [loading, setLoading] = useState(false);
+    const handleNavigation = (productId: number) => {
+        setLoading(true);
+        router.push(`/product/${productId}`);
+    };
 
     // Limit the number of products for tablet and desktop screens to 4
     const displayedProducts = isMobile ? products : products.slice(0, 4);
@@ -52,7 +59,7 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
                                         margin: "0 auto",
                                         cursor: "pointer",
                                     }}
-                                    onClick={() => router.push(`/product/${product.product_id}`)}
+                                    onClick={() => handleNavigation(product.product_id)}
                                 >
                                     <Image
                                         src={imageUrl}
@@ -93,7 +100,7 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
                                     backgroundColor: "var(--landing-background)",
                                     cursor: "pointer",
                                 }}
-                                onClick={() => router.push(`/product/${product.product_id}`)}
+                                onClick={() => handleNavigation(product.product_id)}
                             >
                                 <Image
                                     src={imageUrl}
@@ -122,6 +129,13 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
             <Button variant="contained" sx={{ mt: 3, borderRadius: 20, px: 4, backgroundColor: "var(--button-color)" }}>
                 View All
             </Button>
+            {/* Backdrop for loading effect */}
+            <Backdrop
+                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={loading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Box>
     );
 };

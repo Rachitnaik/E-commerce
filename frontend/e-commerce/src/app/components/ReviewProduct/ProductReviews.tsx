@@ -1,24 +1,15 @@
 import { FC } from "react";
 import { Box, Typography, Grid, Grid2, Button } from "@mui/material";
 import ReviewCard from "./ReviewCard"; // Reusing ReviewCard
+import { ProductReview } from "@/app/utils/interfaces";
 
-interface ProductReview {
-    review_id: string;
-    review_text: string;
-    review_date: Date;
-    rating: number;
-    user: {
-        firstname: string;
-        lastname: string;
-    };
-}
+
 
 interface ProductReviewsProps {
     reviews: ProductReview[];
 }
 
 const ProductReviews: FC<ProductReviewsProps> = ({ reviews }) => {
-    console.log("revuews", reviews)
     return (
         <Box sx={{ maxWidth: 1200, mx: "auto", p: 2 }}>
             <Typography variant="h6" fontWeight="bold" gutterBottom>
