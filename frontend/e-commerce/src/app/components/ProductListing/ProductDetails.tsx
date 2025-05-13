@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Grid, Button, Typography, IconButton, Rating } from "@mui/material";
+import { Button, Typography, IconButton, Rating } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import Image from "next/image";
 import ProductReviews from "../ReviewProduct/ProductReviews";
 
-import Grid2 from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid2";
 // import Layout from "../layout";
 import Footer from "../Footer";
 import NavBar from "../Navbar";
@@ -31,11 +31,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, averageRating,
     return (
         <>
             <NavBar />
-            <Grid2 container maxWidth={1200} mx="auto" p={3} spacing={4}>
+            <Grid container maxWidth={1200} mx="auto" p={3} spacing={4}>
                 {/* Left: Image Section */}
-                <Grid2 size={{ xs: 12, md: 6 }} display="flex" gap={2}>
+                <Grid size={{ xs: 12, md: 6 }} display="flex" gap={2}>
                     {/* Thumbnail Images */}
-                    <Grid2 display="flex" flexDirection={{ xs: "row", md: "column" }} gap={2}>
+                    <Grid display="flex" flexDirection={{ xs: "row", md: "column" }} gap={2}>
                         {product.features?.map((feature) => (
                             <Image
                                 key={feature._key}
@@ -51,26 +51,26 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, averageRating,
                                 onClick={() => setSelectedImage(feature.image)}
                             />
                         ))}
-                    </Grid2>
+                    </Grid>
 
                     {/* Main Product Image */}
-                    <Grid2 mx={{ xs: 0, md: 2 }}>
+                    <Grid mx={{ xs: 0, md: 2 }}>
                         <Image src={selectedImage} alt="Product" width={360} height={350} style={{ borderRadius: 10 }} />
-                    </Grid2>
-                </Grid2>
+                    </Grid>
+                </Grid>
 
                 {/* Right: Product Details */}
-                <Grid2 size={{ xs: 12, md: 6 }} px={{ xs: 0, md: 4 }}>
+                <Grid size={{ xs: 12, md: 6 }} px={{ xs: 0, md: 4 }}>
                     <Typography variant="h5" fontWeight={800} sx={{ textTransform: "uppercase" }}>
                         {product.product_name}
                     </Typography>
 
-                    <Grid2 display="flex" alignItems="center" gap={1} mt={1}>
+                    <Grid display="flex" alignItems="center" gap={1} mt={1}>
                         <Rating value={averageRating} readOnly precision={0.5} />
                         <Typography variant="body2">{averageRating}/5 ({reviewCount} Reviews)</Typography>
-                    </Grid2>
+                    </Grid>
 
-                    <Grid2 display="flex" alignItems="center" gap={2} mt={2}>
+                    <Grid display="flex" alignItems="center" gap={2} mt={2}>
                         <Typography variant="h6" fontWeight={800}>${product.price}</Typography>
                         {/* {product.originalPrice && (
                             <Typography variant="body1" sx={{ textDecoration: "line-through", color: "gray" }}>
@@ -82,7 +82,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, averageRating,
                                 -{product.discountPercentage}%
                             </Typography>
                         )} */}
-                    </Grid2>
+                    </Grid>
 
                     <Typography variant="body2" mt={2} color="text.secondary">
                         {product.description}
@@ -91,9 +91,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, averageRating,
                     {product.features && product.features.length > 0 && (
                         <>
                             <Typography mt={3} fontWeight={600}>Select Colors</Typography>
-                            <Grid2 display="flex" gap={1} mt={1}>
+                            <Grid display="flex" gap={1} mt={1}>
                                 {product.features.map((feature) => (
-                                    <Grid2
+                                    <Grid
                                         key={feature.color}
                                         width={24}
                                         height={24}
@@ -107,14 +107,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, averageRating,
                                         sx={{ cursor: "pointer" }}
                                     />
                                 ))}
-                            </Grid2>
+                            </Grid>
                         </>
                     )}
 
                     {product.features && product.features.length > 0 && (
                         <>
                             <Typography mt={3} fontWeight={600}>Choose Size</Typography>
-                            <Grid2 display="flex" gap={1} mt={1}>
+                            <Grid display="flex" gap={1} mt={1}>
                                 {product.features.map((feature) => (
                                     <Button
                                         key={feature._key}
@@ -136,16 +136,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, averageRating,
                                         {feature.size}
                                     </Button>
                                 ))}
-                            </Grid2>
+                            </Grid>
                         </>
                     )}
 
-                    <Grid2 display="flex" alignItems="center" gap={2} mt={4}>
-                        <Grid2 display="flex" alignItems="center" border="1px solid grey" borderRadius={5} p={1}>
+                    <Grid display="flex" alignItems="center" gap={2} mt={4}>
+                        <Grid display="flex" alignItems="center" border="1px solid grey" borderRadius={5} p={1}>
                             <IconButton onClick={() => setQuantity(Math.max(1, quantity - 1))}><Remove /></IconButton>
                             <Typography px={2}>{quantity}</Typography>
                             <IconButton onClick={() => setQuantity(quantity + 1)}><Add /></IconButton>
-                        </Grid2>
+                        </Grid>
 
                         <Button
                             variant="contained"
@@ -154,12 +154,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, averageRating,
                         >
                             Add to Cart
                         </Button>
-                    </Grid2>
-                </Grid2>
-                <Grid2 size={12} mt={6}>
+                    </Grid>
+                </Grid>
+                <Grid size={12} mt={6}>
                     <ProductReviews reviews={product?.reviews} />
-                </Grid2>
-            </Grid2>
+                </Grid>
+            </Grid>
             <Footer />
         </>
     );

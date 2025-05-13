@@ -9,6 +9,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 import { Product } from "../../utils/interfaces"
 import '../../globals.css';
 import { useState } from 'react';
+import useProducts from '@/app/customHooks/useProduct';
 
 interface ProductListingProps {
     title: string;
@@ -20,6 +21,8 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
     const isMobile = useMediaQuery("(max-width: 768px)");
     const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1024px)");
     const isDesktop = useMediaQuery("(min-width: 1025px)");
+
+    const { error } = useProducts();
 
     const [loading, setLoading] = useState(false);
     const handleNavigation = (productId: number) => {
@@ -35,28 +38,74 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
                 {title}
             </Typography>
 
-            {isMobile ? (
-                <Swiper
-                    modules={[Autoplay, Pagination]}
-                    autoplay={{ delay: 2000, disableOnInteraction: false }}
-                    loop={true}
-                    speed={1200}
-                    slidesPerView={1}
-                    spaceBetween={10}
-                >
-                    {displayedProducts.map((product, index) => {
-                        const imageUrl = product.features?.find((feature) => feature.isDefault)?.image || '/file.svg';
 
-                        return (
-                            <SwiperSlide key={product.product_id} >
+
+            {error ? (
+                <Typography color="error">{error}</Typography>
+            ) : (
+                isMobile ? (
+                    <Swiper
+                        modules={[Autoplay, Pagination]}
+                        autoplay={{ delay: 2000, disableOnInteraction: false }}
+                        loop={true}
+                        speed={1200}
+                        slidesPerView={1}
+                        spaceBetween={10}
+                    >
+                        {displayedProducts.map((product, index) => {
+                            const imageUrl = product.features?.find((feature) => feature.isDefault)?.image || '/file.svg';
+
+                            return (
+                                <SwiperSlide key={product.product_id} >
+                                    <Card
+                                        sx={{
+                                            maxWidth: 200,
+                                            p: 2,
+                                            borderRadius: 3,
+                                            boxShadow: "none",
+                                            backgroundColor: "var(--landing-background)",
+                                            margin: "0 auto",
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={() => handleNavigation(product.product_id)}
+                                    >
+                                        <Image
+                                            src={imageUrl}
+                                            alt={product.product_name}
+                                            width={200}
+                                            height={150}
+                                            style={{ objectFit: 'cover', borderRadius: '8px' }}
+                                        />
+                                        <CardContent>
+                                            <Typography variant="subtitle1" fontWeight="bold" color="var(--text-color)">
+                                                {product.product_name}
+                                            </Typography>
+                                            <Rating value={product.averageRating} precision={0.5} readOnly size="small" />
+                                            <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
+                                                <Typography variant="h6" fontWeight="bold" color="var(--text-color)">
+                                                    ${product.price}
+                                                </Typography>
+                                            </Box>
+                                        </CardContent>
+                                    </Card>
+                                </SwiperSlide>
+                            );
+                        })}
+                    </Swiper>
+                ) : (
+                    <Box display="flex" justifyContent="center" gap={3} flexWrap="wrap">
+                        {displayedProducts.map((product, index) => {
+                            const imageUrl = product.features?.find((feature) => feature.isDefault)?.image || '/file.svg';
+
+                            return (
                                 <Card
+                                    key={product.product_id}
                                     sx={{
                                         maxWidth: 200,
                                         p: 2,
                                         borderRadius: 3,
                                         boxShadow: "none",
                                         backgroundColor: "var(--landing-background)",
-                                        margin: "0 auto",
                                         cursor: "pointer",
                                     }}
                                     onClick={() => handleNavigation(product.product_id)}
@@ -80,51 +129,10 @@ const ProductListing = ({ title, products }: ProductListingProps) => {
                                         </Box>
                                     </CardContent>
                                 </Card>
-                            </SwiperSlide>
-                        );
-                    })}
-                </Swiper>
-            ) : (
-                <Box display="flex" justifyContent="center" gap={3} flexWrap="wrap">
-                    {displayedProducts.map((product, index) => {
-                        const imageUrl = product.features?.find((feature) => feature.isDefault)?.image || '/file.svg';
-
-                        return (
-                            <Card
-                                key={product.product_id}
-                                sx={{
-                                    maxWidth: 200,
-                                    p: 2,
-                                    borderRadius: 3,
-                                    boxShadow: "none",
-                                    backgroundColor: "var(--landing-background)",
-                                    cursor: "pointer",
-                                }}
-                                onClick={() => handleNavigation(product.product_id)}
-                            >
-                                <Image
-                                    src={imageUrl}
-                                    alt={product.product_name}
-                                    width={200}
-                                    height={150}
-                                    style={{ objectFit: 'cover', borderRadius: '8px' }}
-                                />
-                                <CardContent>
-                                    <Typography variant="subtitle1" fontWeight="bold" color="var(--text-color)">
-                                        {product.product_name}
-                                    </Typography>
-                                    <Rating value={product.averageRating} precision={0.5} readOnly size="small" />
-                                    <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
-                                        <Typography variant="h6" fontWeight="bold" color="var(--text-color)">
-                                            ${product.price}
-                                        </Typography>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                        );
-                    })}
-                </Box>
-            )}
+                            );
+                        })}
+                    </Box>
+                ))}
 
             <Button variant="contained" sx={{ mt: 3, borderRadius: 20, px: 4, backgroundColor: "var(--button-color)" }}>
                 View All
